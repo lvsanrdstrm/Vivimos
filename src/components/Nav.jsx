@@ -23,7 +23,7 @@ function Nav() {
     <Link to="/createAd" onClick={handleCreateAdClick}>Skapa annons</Link> &nbsp;
     { activeUser.loggedIn && (
       <>
-      <Link to='/users/:username'>Min sida</Link> &nbsp;
+      <Link to='/users/:id'>Min sida</Link> &nbsp;
       </>
     )}
   </nav>
