@@ -275,7 +275,10 @@
       "publicerad": true,
       "enddate": "2024-04-30",
       "userId": "8224",
-      "endTimestamp": 1714435200000
+      "endTimestamp": 1714435200000,
+      "bids": [
+        "b456"
+      ]
     },
     {
       "id": "62e0",
@@ -380,7 +383,45 @@
       "publicerad": true,
       "enddate": "2024-03-30",
       "userId": "b456",
-      "endTimestamp": 1711756800000
+      "endTimestamp": 1711756800000,
+      "bids": [
+        "b456"
+      ]
+    },
+    {
+      "id": "b816",
+      "rubrik": "djupa suckar och höga stämningar",
+      "län": "Västerbotten",
+      "boende": "Gård",
+      "boendeAnnat": "",
+      "sysselsättning": "gaffeltruckförare",
+      "relstatus": "exklusiv särbo",
+      "partnerinfo": "boel",
+      "barnAntal": "",
+      "barnBoende": "",
+      "husdjur": "husdjur",
+      "Hund": "",
+      "Katt": "",
+      "Fågel": "",
+      "Häst": "Häst",
+      "Annat": "mullvad",
+      "stad": "Småstad",
+      "stadAlternativ": "",
+      "Skog": "Skog",
+      "Hav": "",
+      "Kultur": "",
+      "Shopping": "Shopping",
+      "bil": "",
+      "bilinfo": "",
+      "barn": "",
+      "fritidsintressen": "målar naglarna, röker pipa, knypplar ",
+      "presentation": "jag är en glad prick i sina bästa år. men jag saknar inte djup! nu är jag på jakt efter en själsfrände att loda avgrunden med.",
+      "ålder": "58",
+      "kön": "Annat",
+      "publicerad": true,
+      "enddate": "2024-03-26",
+      "userId": "b456",
+      "endTimestamp": 1711411200000
     }
   ]
 }
