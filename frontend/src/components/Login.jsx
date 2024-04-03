@@ -167,6 +167,7 @@ function Login() {
       role: "user"
     }
     try {
+      
       await fetch(`api/users/`, {
         method: "POST",
         headers: {
