@@ -370,4 +370,106 @@ app.MapGet("/ads", () => @"
     }
   ]"
   );
+
+app.MapPost("/users", () => @"
+[
+    {
+      ""id"": ""1"",
+      ""username"": ""rosa_parks"",
+      ""email"": ""rosa.parks@example.com"",
+      ""password"": ""bus"",
+      ""role"": ""user""
+    },
+    {
+      ""id"": ""2"",
+      ""username"": ""malala_yousafzai"",
+      ""email"": ""malala.yousafzai@example.com"",
+      ""password"": ""nobelpeaceprize"",
+      ""role"": ""admin""
+    },
+    {
+      ""id"": ""3"",
+      ""username"": ""emma_watson"",
+      ""email"": ""emma.watson@example.com"",
+      ""password"": ""heforshe"",
+      ""role"": ""user""
+    },
+    {
+      ""id"": ""4"",
+      ""username"": ""bell_hooks"",
+      ""email"": ""bell.hooks@example.com"",
+      ""password"": ""feministtheory"",
+      ""role"": ""user""
+    },
+    {
+      ""id"": ""5"",
+      ""username"": ""sojourner_truth"",
+      ""email"": ""sojourner.truth@example.com"",
+      ""password"": ""aintiawoman"",
+      ""role"": ""admin""
+    },
+    {
+      ""id"": ""63b0"",
+      ""username"": ""aagrg"",
+      ""email"": ""erik.cronqvist@gmail.com"",
+      ""password"": ""aefaef""
+    },
+    {
+      ""id"": ""8dde"",
+      ""username"": ""aaga"",
+      ""email"": ""erik.cronqvist@gmail.com"",
+      ""password"": ""gagaga"",
+      ""role"": ""user""
+    },
+    {
+      ""id"": ""e712"",
+      ""username"": ""bauta"",
+      ""email"": ""efeo@geo.com"",
+      ""password"": ""oioioioi"",
+      ""role"": ""user""
+    },
+    {
+      ""id"": ""ad58"",
+      ""username"": ""micke"",
+      ""email"": ""mikaelfant@gmail.com"",
+      ""password"": ""123"",
+      ""role"": ""user""
+    },
+    {
+      ""id"": ""8224"",
+      ""username"": ""fefefef"",
+      ""email"": ""erik.cronqvist@gmail.com"",
+      ""password"": ""efe"",
+      ""role"": ""user""
+    },
+    {
+      ""id"": ""0150"",
+      ""username"": ""micke"",
+      ""email"": ""mikaelfant@gmail.com"",
+      ""password"": ""123"",
+      ""role"": ""user""
+    },
+    {
+      ""id"": ""d4fe"",
+      ""username"": ""micke2"",
+      ""email"": ""mikaelfant@gmail.com"",
+      ""password"": ""1212"",
+      ""role"": ""user""
+    },
+    {
+      ""id"": ""b456"",
+      ""username"": ""brillinat_emma"",
+      ""email"": ""emma@trinket.us"",
+      ""password"": ""wow"",
+      ""role"": ""user""
+    },
+    {
+      ""id"": ""4dfc"",
+      ""username"": ""idiot"",
+      ""email"": ""apa@gmail.com"",
+      ""password"": ""q"",
+      ""role"": ""user""
+    }
+  ]"
+);
 app.Run("http://localhost:3001");
