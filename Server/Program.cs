@@ -371,7 +371,7 @@ app.MapGet("/ads", () => @"
   ]"
   );
 
-app.MapPost("/users", () => @"
+/*app.MapPost("/users", () => @"
 [
     {
       ""id"": ""1"",
@@ -471,5 +471,6 @@ app.MapPost("/users", () => @"
       ""role"": ""user""
     }
   ]"
-);
+);*/
+
 app.Run("http://localhost:3001");

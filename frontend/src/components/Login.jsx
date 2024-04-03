@@ -120,24 +120,35 @@ function Login() {
     setModalOpen(false)
   }
 
-  async function fetchUser(e, formData) {
-    e.preventDefault()
-    console.log(formData.username)
-    try {
-      const response = await fetch(`/api/users/?username=${formData.username}&password=${formData.password}`)
-      const data = await response.json()
 
-      if (data[0]) {
-        console.log(data, formData)
+  async function fetchUser(e, formData) {
+    e.preventDefault();
+    const userData = {
+      username: formData.username,
+      password: formData.password
+    };
+
+    try {
+      const response = await fetch('/api/users', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(userData)
+      });
+      const data = await response.json();
+
+      if (data) {
+        console.log(data);
         setActiveUser({
-          ...data[0],
+          ...data,
           loggedIn: true
-        })
+        });
       }
     } catch (error) {
-      console.error('Error fetching mock data:', error)
+      console.error('Error fetching user data:', error);
     } finally {
-      setModalOpen(false)
+      setModalOpen(false);
     }
   }
 
@@ -161,7 +172,7 @@ function Login() {
       role: "user"
     }
     try {
-      
+
       await fetch(`api/users/`, {
         method: "POST",
         headers: {
