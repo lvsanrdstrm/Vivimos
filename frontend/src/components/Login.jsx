@@ -107,12 +107,12 @@ function Login() {
     }))
   }
 
- /*  function handleLogout() {
-    setActiveUser({})
-    setShowReg(false)
-    setModalOpen(false)
-    formData = []
-  } */
+  /*  function handleLogout() {
+     setActiveUser({})
+     setShowReg(false)
+     setModalOpen(false)
+     formData = []
+   } */
 
   function handleReg() {
     console.log('handle reg')
@@ -121,25 +121,31 @@ function Login() {
   }
 
   async function fetchUser(e, formData) {
-    e.preventDefault()
-    console.log(formData.username)
-    try {
-      const response = await fetch(`/api/users/?username=${formData.username}&password=${formData.password}`)
-      const data = await response.json()
+    e.preventDefault();
 
-      if (data[0]) {
-        console.log(data, formData)
-        setActiveUser({
-          ...data[0],
-          loggedIn: true
-        })
+
+    try {
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      });
+
+      if (response.ok) {
+        const userData = await response.json();
+        setActiveUser({ ...userData, loggedIn: true });
+      } else {
+        // Handle authentication error
       }
     } catch (error) {
-      console.error('Error fetching mock data:', error)
+      console.error('Error authenticating user:', error);
     } finally {
-      setModalOpen(false)
+      setModalOpen(false);
     }
   }
+
 
 
   async function createUser(e) {
