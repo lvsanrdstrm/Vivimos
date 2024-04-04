@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom"
 
 
 function Section1({ form, handleChange }) {
-  
+
   return (
     <>
       <h1>Skapa ett erbjudande om livsbyte (1)</h1>
@@ -58,7 +58,7 @@ function Section1({ form, handleChange }) {
 }
 
 
-function Section2({form, handleChange}) {
+function Section2({ form, handleChange }) {
   return (
     <>
       <h1>Skapa ett erbjudande om livsbyte (2)</h1>
@@ -94,36 +94,36 @@ function Section2({form, handleChange}) {
       <label>
         Lägenhet
         <input type="radio" name="boende" value="Lägenhet" checked={form.boende === "Lägenhet"}
-               onChange={handleChange}/>
+          onChange={handleChange} />
       </label>
       <label>
         Villa
-        <input type="radio" name="boende" value="Villa" checked={form.boende === "Villa"} onChange={handleChange}/>
+        <input type="radio" name="boende" value="Villa" checked={form.boende === "Villa"} onChange={handleChange} />
       </label>
       <label>
         Gård
-        <input type="radio" name="boende" value="Gård" checked={form.boende === "Gård"} onChange={handleChange}/>
+        <input type="radio" name="boende" value="Gård" checked={form.boende === "Gård"} onChange={handleChange} />
       </label>
       <label>
         Sommarstuga
         <input type="radio" name="boende" value="Sommarstuga" checked={form.boende === "Sommarstuga"}
-               onChange={handleChange}/>
+          onChange={handleChange} />
       </label>
       <label>
         Husvagn
-        <input type="radio" name="boende" value="Husvagn" checked={form.boende === "Husvagn"} onChange={handleChange}/>
+        <input type="radio" name="boende" value="Husvagn" checked={form.boende === "Husvagn"} onChange={handleChange} />
       </label>
       <label>
         Trappuppgång
         <input type="radio" name="boende" value="Trappuppgång" checked={form.boende === "Trappuppgång"}
-               onChange={handleChange}/>
+          onChange={handleChange} />
       </label>
       <label>
         Annat, vilket?
-        <input type="radio" name="boende" value="Annat" checked={form.boende === "Annat"} onChange={handleChange}/>
+        <input type="radio" name="boende" value="Annat" checked={form.boende === "Annat"} onChange={handleChange} />
         {form.boende === "Annat" && (
           <input type="text" name="boendeAnnat" value={form.boendeAnnat} onChange={handleChange}
-                 placeholder="Ange boende"/>
+            placeholder="Ange boende" />
         )}
       </label>
       <h3>Bor du i:</h3>
@@ -148,19 +148,19 @@ function Section2({form, handleChange}) {
       <h3>Ditt boende är:</h3>
       <label>
         Naturnära (skog)
-        <input type="checkbox" name="Skog" checked={form.Skog !== ""} onChange={handleChange}/>
+        <input type="checkbox" name="Skog" checked={form.Skog !== ""} onChange={handleChange} />
       </label>
       <label>
         Naturnära (hav/sjö)
-        <input type="checkbox" name="Hav" checked={form.Hav !== ""} onChange={handleChange}/>
+        <input type="checkbox" name="Hav" checked={form.Hav !== ""} onChange={handleChange} />
       </label>
       <label>
         Kulturnära (biografer, teater, muséer, gallerier)
-        <input type="checkbox" name="Kultur" checked={form.Kultur !== ""} onChange={handleChange}/>
+        <input type="checkbox" name="Kultur" checked={form.Kultur !== ""} onChange={handleChange} />
       </label>
       <label>
         Shoppingnära
-        <input type="checkbox" name="Shopping" checked={form.Shopping !== ""} onChange={handleChange}/>
+        <input type="checkbox" name="Shopping" checked={form.Shopping !== ""} onChange={handleChange} />
       </label>
       <h3>Har du bil?</h3>
       <label>
@@ -188,38 +188,38 @@ function Section2({form, handleChange}) {
         <>
           <p>Märke/modell/år:</p>
           <input type="text"
-                 name="bilinfo"
-                 value={form.bilinfo}
-                 onChange={handleChange}/>
+            name="bilinfo"
+            value={form.bilinfo}
+            onChange={handleChange} />
         </>
       )}
     </>
   );
 }
 
-function Section3({form, handleChange}) {
+function Section3({ form, handleChange }) {
   return (
     <>
       <h1>Skapa ett erbjudande om livsbyte (3)</h1>
       <h2>Nu lite om vad du fyller ditt liv med</h2>
       <h3>Vilken sysselsättning har du?:</h3>
       <input type="text"
-             name="sysselsättning"
-             value={form.sysselsättning}
-             onChange={handleChange}/>
+        name="sysselsättning"
+        value={form.sysselsättning}
+        onChange={handleChange} />
 
       <h3>Vad gör du på fritiden? Skriv upp till fem fritidsintressen:</h3>
       <input type="text"
-             name="fritidsintressen"
-             value={form.fritidsintressen}
-             onChange={handleChange}/>
+        name="fritidsintressen"
+        value={form.fritidsintressen}
+        onChange={handleChange} />
 
 
     </>
   );
 }
 
-function Section4({form, handleChange}) {
+function Section4({ form, handleChange }) {
   return (
     <>
       <h1>Skapa ett erbjudande om livsbyte (4)</h1>
@@ -310,9 +310,9 @@ function Section4({form, handleChange}) {
         <>
           <p>Namn och ålder på din/a partner/s?:</p>
           <input type="text"
-                 name="partnerinfo"
-                 value={form.partnerinfo}
-                 onChange={handleChange}/>
+            name="partnerinfo"
+            value={form.partnerinfo}
+            onChange={handleChange} />
         </>
       )}
       <h3>Har du barn?</h3>
@@ -460,28 +460,28 @@ function Section4({form, handleChange}) {
   );
 }
 
-function Section5({form, handleChange}) {
+function Section5({ form, handleChange }) {
   return (
     <>
       <h1>Skapa ett erbjudande om livsbyte (5)</h1>
       <h2>Nu till det svåraste, att presentera ditt livserbjudande. </h2>
       <h3>Skriv en kort, lockande presentation av dig själv och ditt liv:</h3>
       <textarea name="presentation"
-                value={form.presentation}
-                onChange={handleChange}
-                placeholder="Skriv en presentation av livet du erbjuder!"/>
+        value={form.presentation}
+        onChange={handleChange}
+        placeholder="Skriv en presentation av livet du erbjuder!" />
 
       <h3>Och slutligen, skriv en lockande rubrik till din annons:</h3>
       <input type="text"
-             name="rubrik"
-             value={form.rubrik}
-             onChange={handleChange}/>
+        name="rubrik"
+        value={form.rubrik}
+        onChange={handleChange} />
 
       &nbsp;
     </>
   );
 }
-function Section6({form, handleChange}) {
+function Section6({ form, handleChange }) {
   return (
     <>
       <h2>Vill du publicera din annons nu eller spara den till senare?</h2>
@@ -519,7 +519,7 @@ function Section6({form, handleChange}) {
     </>
   );
 }
-function CreateAd () {
+function CreateAd() {
   const navigate = useNavigate()
   const { activeUser } = useContext(GlobalContext);
   const [formData, setFormData] = useState({});
@@ -564,7 +564,7 @@ function CreateAd () {
   const [form, setForm] = useState(defaultAd);
 
   const handleChange = (event) => {
-    const {name, value, type, checked} = event.target;
+    const { name, value, type, checked } = event.target;
     let newValue = value;
 
     if (type === 'checkbox') {
@@ -621,55 +621,78 @@ function CreateAd () {
     // Om konvertera till objekt.
     // const info = Object.fromEntries(data);
 
-  const response = await fetch('/api/ads', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(formDataWithId),
+    // GAMLA KODEN const response = await fetch('/api/ads', {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: JSON.stringify(formDataWithId),
 
-  });
+    // });
 
+    async function postAd(formData) {
+      try {
+        const response = await fetch('/api/ads', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(formData),
+        });
 
-
-    if (response.ok) {
-      form.publicerad
-        ? alert(`Tack! Din annons har nu publicerats! Den är aktiv till och med ${form.enddate}. Lycka till med livsbytet!`)
-        : alert('Din annons har sparats. Du kan publicera den när du vill på "Min sida"');
-      navigate('/');
-    } else {
-      console.error('Error saving data');
+        if (response.ok) {
+          form.publicerad
+            ? alert(`Tack! Din annons har nu publicerats! Den är aktiv till och med ${form.enddate}. Lycka till med livsbytet!`)
+            : alert('Din annons har sparats. Du kan publicera den när du vill på "Min sida"');
+          navigate('/');
+        } else {
+          console.error('Error saving data');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      }
     }
+
+    // GAMLA KODEN if (response.ok) {
+    //   form.publicerad
+    //     ? alert(`Tack! Din annons har nu publicerats! Den är aktiv till och med ${form.enddate}. Lycka till med livsbytet!`)
+    //     : alert('Din annons har sparats. Du kan publicera den när du vill på "Min sida"');
+    //   navigate('/');
+    // } else {
+    //   console.error('Error saving data');
+    // }
+
+
   };
 
-return (
-  <form onSubmit={handleSubmit}>
-    {currentSection === 1 && <Section1 form={form} handleChange={handleChange}/>}
-    {currentSection === 2 && <Section2 form={form} handleChange={handleChange}/>}
-    {currentSection === 3 && <Section3 form={form} handleChange={handleChange}/>}
-    {currentSection === 4 && <Section4 form={form} handleChange={handleChange}/>}
-    {currentSection === 5 && <Section5 form={form} handleChange={handleChange}/>}
-    {currentSection === 6 && <Section6 form={form} handleChange={handleChange}/>}
+  return (
+    <form onSubmit={handleSubmit}>
+      {currentSection === 1 && <Section1 form={form} handleChange={handleChange} />}
+      {currentSection === 2 && <Section2 form={form} handleChange={handleChange} />}
+      {currentSection === 3 && <Section3 form={form} handleChange={handleChange} />}
+      {currentSection === 4 && <Section4 form={form} handleChange={handleChange} />}
+      {currentSection === 5 && <Section5 form={form} handleChange={handleChange} />}
+      {currentSection === 6 && <Section6 form={form} handleChange={handleChange} />}
 
-    <br/>
-    <br/>
+      <br />
+      <br />
 
-    {currentSection > 1 && (
-      <button type="button" onClick={prevSection}>Previous</button>
-    )}
+      {currentSection > 1 && (
+        <button type="button" onClick={prevSection}>Previous</button>
+      )}
 
-    {currentSection < totalSections && (
-      <button type="button" onClick={nextSection}>Continue</button>
-    )}
+      {currentSection < totalSections && (
+        <button type="button" onClick={nextSection}>Continue</button>
+      )}
 
-    {currentSection === totalSections && (
-      <>
-        <br/>
-        <button type="submit">Submit</button>
-      </>
-    )}
-  </form>
-);
+      {currentSection === totalSections && (
+        <>
+          <br />
+          <button type="submit">Submit</button>
+        </>
+      )}
+    </form>
+  );
 }
 
 export default CreateAd;

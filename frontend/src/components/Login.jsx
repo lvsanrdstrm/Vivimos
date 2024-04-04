@@ -148,44 +148,86 @@ function Login() {
 
 
 
-  async function createUser(e) {
-    e.preventDefault()
+  // async function createUser(e) {
+  //   e.preventDefault()
 
-    const regData = new FormData(e.target)
+  //   const regData = new FormData(e.target)
+  //   const username = regData.get('username');
+  //   const email = regData.get('email');
+  //   const password = regData.get('password');
+
+  //   if (!username || !email || !password) {
+  //     alert('Du har missat att fylla i alla fält.')
+  //     return
+  //   }
+
+  //   let regPost = Object.fromEntries(regData)
+  //   regPost = {
+  //     ...regPost,
+  //     role: "user"
+  //   }
+  //   try {
+
+  //     await fetch(`api/users/`, {
+  //       method: "POST",
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify(regPost),
+  //     })
+  //       .then((response) => response.json())
+  //       .then((data) => console.log('New user added:', data))
+  //       .catch((error) => console.error('Error adding new user:', error))
+
+  //   } catch (error) {
+  //     console.error('Error fetching mock data:', error)
+  //   } finally {
+  //     setModalOpen(false)
+  //   }
+
+  // }
+
+  async function createUser(e) {
+    e.preventDefault();
+
+    const regData = new FormData(e.target);
     const username = regData.get('username');
     const email = regData.get('email');
     const password = regData.get('password');
 
     if (!username || !email || !password) {
-      alert('Du har missat att fylla i alla fält.')
-      return
+      alert('Du har missat att fylla i alla fält.');
+      return;
     }
 
-    let regPost = Object.fromEntries(regData)
-    regPost = {
-      ...regPost,
-      role: "user"
-    }
+    const userData = {
+      username: username,
+      email: email,
+      password: password
+    };
+
     try {
-      
-      await fetch(`api/users/`, {
-        method: "POST",
+      const response = await fetch('/api/auth/register', {
+        method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json'
         },
-        body: JSON.stringify(regPost),
-      })
-        .then((response) => response.json())
-        .then((data) => console.log('New user added:', data))
-        .catch((error) => console.error('Error adding new user:', error))
+        body: JSON.stringify(userData)
+      });
 
+      if (response.ok) {
+        const data = await response.json();
+        console.log('New user added:', data);
+      } else {
+        console.error('Error adding new user:', response.statusText);
+      }
     } catch (error) {
-      console.error('Error fetching mock data:', error)
+      console.error('Error adding new user:', error);
     } finally {
-      setModalOpen(false)
+      setModalOpen(false);
     }
-
   }
+
 
 }
 
