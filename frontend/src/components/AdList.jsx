@@ -15,7 +15,7 @@ function AdList() {
     async function load() {
       const response = await fetch('/api/ads')
       let items = await response.json()
-      items = items.filter(item => item.publicerad === true)
+      items = items.filter(item => item.adActive === true)
       console.log(response)
       setItems(items)
       setAds(items)
