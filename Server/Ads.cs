@@ -5,7 +5,7 @@ namespace Server;
 
     internal class Ads
     {
-        public static string AllAds(State state, HttpContext ctx)
+        public static async Task<IResult> AllAds(State state, HttpContext ctx)
         {
             List<Ad> ads = new List<Ad>();
             string query = "SELECT * FROM ads";
@@ -57,10 +57,13 @@ namespace Server;
             }
         }
 
-            // Serialize the ads list to JSON
-            return JsonConvert.SerializeObject(ads);
-        }
-    
+
+            var responseJson = JsonConvert.SerializeObject(ads);
+            await ctx.Response.WriteAsync(responseJson); // Await the WriteAsync method call
+            return Results.Ok(); // Return an appropriate result
+
+    }
+
 
     public static async Task<IResult> AddAd(State state, HttpContext ctx)
     {
@@ -68,25 +71,68 @@ namespace Server;
         // Extract the ad data from the request body
         var requestBody = await new StreamReader(ctx.Request.Body).ReadToEndAsync();
         var adData = JsonConvert.DeserializeObject<Ad>(requestBody);
-
-        string query = "INSERT INTO ads (headline, county, occupation) VALUES (@Headline, @County, @Occupation)";
-        MySqlCommand command = new MySqlCommand(query, state.DB);
-
-       
-        command.Parameters.AddWithValue("@Description", adData.Headline);
-        command.Parameters.AddWithValue("@County", adData.County);
-        command.Parameters.AddWithValue("@Occupation", adData.Occupation);
-
         try
         {
+            string query = @"
+            INSERT INTO ads (
+                headline, county, dwelling, dwelling_other, occupation, rel_status, partner_info, 
+                children_num, children_home, pets, dog, cat, bird, horse, other, city, city_alternative, 
+                forest, sea, culture, shopping, car, car_info, hobbies, presentation, age, gender, 
+                ad_active, end_date, user_id, end_timestamp, children
+            ) 
+            VALUES (
+                @Headline, @County, @Dwelling, @DwellingOther, @Occupation, @RelStatus, @PartnerInfo,
+                @ChildrenNum, @ChildrenHome, @Pets, @Dog, @Cat, @Bird, @Horse, @Other, @City, @CityAlternative,
+                @Forest, @Sea, @Culture, @Shopping, @Car, @CarInfo, @Hobbies, @Presentation, @Age, @Gender,
+                @AdActive, @EndDate, @UserId, @EndTimestamp, @Children
+            )";
+
+            MySqlCommand command = new MySqlCommand(query, state.DB);
+
+
+            command.Parameters.AddWithValue("@Headline", adData.Headline);
+            command.Parameters.AddWithValue("@County", adData.County);
+            command.Parameters.AddWithValue("@Dwelling", adData.Dwelling);
+            command.Parameters.AddWithValue("@DwellingOther", adData.DwellingOther);
+            command.Parameters.AddWithValue("@Occupation", adData.Occupation);
+            command.Parameters.AddWithValue("@RelStatus", adData.RelStatus);
+            command.Parameters.AddWithValue("@PartnerInfo", adData.PartnerInfo);
+            command.Parameters.AddWithValue("@ChildrenNum", adData.ChildrenNum);
+            command.Parameters.AddWithValue("@ChildrenHome", adData.ChildrenHome);
+            command.Parameters.AddWithValue("@Pets", adData.Pets);
+            command.Parameters.AddWithValue("@Dog", adData.Dog);
+            command.Parameters.AddWithValue("@Cat", adData.Cat);
+            command.Parameters.AddWithValue("@Bird", adData.Bird);
+            command.Parameters.AddWithValue("@Horse", adData.Horse);
+            command.Parameters.AddWithValue("@Other", adData.Other);
+            command.Parameters.AddWithValue("@City", adData.City);
+            command.Parameters.AddWithValue("@CityAlternative", adData.CityAlternative);
+            command.Parameters.AddWithValue("@Forest", adData.Forest);
+            command.Parameters.AddWithValue("@Sea", adData.Sea);
+            command.Parameters.AddWithValue("@Culture", adData.Culture);
+            command.Parameters.AddWithValue("@Shopping", adData.Shopping);
+            command.Parameters.AddWithValue("@Car", adData.Car);
+            command.Parameters.AddWithValue("@CarInfo", adData.CarInfo);
+            command.Parameters.AddWithValue("@Hobbies", adData.Hobbies);
+            command.Parameters.AddWithValue("@Presentation", adData.Presentation);
+            command.Parameters.AddWithValue("@Age", adData.Age);
+            command.Parameters.AddWithValue("@Gender", adData.Gender);
+            command.Parameters.AddWithValue("@AdActive", adData.AdActive);
+            command.Parameters.AddWithValue("@EndDate", adData.EndDate);
+            command.Parameters.AddWithValue("@UserId", adData.UserId);
+            command.Parameters.AddWithValue("@EndTimestamp", adData.EndTimestamp);
+            command.Parameters.AddWithValue("@Children", adData.Children);
+
+        
             // Execute the SQL command to insert the ad into the database
             await command.ExecuteNonQueryAsync();
+            return TypedResults.Ok("Ad added successfully");
         }
         catch (Exception ex)
         {
             // Handle any exceptions that occur during database interaction
-            ctx.Response.StatusCode = 500;
-            await ctx.Response.WriteAsync($"Error adding ad: {ex.Message}");
+            Console.WriteLine($"Error adding ad: {ex.Message}");
+            return TypedResults.Problem("An error occurred while adding the ad.");
         }
    
     }
