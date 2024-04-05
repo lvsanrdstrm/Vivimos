@@ -37,20 +37,18 @@ namespace Server;
         var requestBody = await new StreamReader(ctx.Request.Body).ReadToEndAsync();
         var adData = JsonConvert.DeserializeObject<Ad>(requestBody);
 
-        // Perform validation if needed
+        string query = "INSERT INTO ads (headline, county, occupation) VALUES (@Headline, @County, @Occupation)";
+        MySqlCommand command = new MySqlCommand(query, state.DB);
 
-        // Insert the ad data into the database
+       
+        command.Parameters.AddWithValue("@Description", adData.Headline);
+        command.Parameters.AddWithValue("@County", adData.County);
+        command.Parameters.AddWithValue("@Occupation", adData.Occupation);
+
         try
         {
-            // tror man ska använda sig av någonslags sånhär command.parameters.add
-            command.Parameters.Add(new SqlParameter("@Price", adData.Price));
-
-            // och istället för command.executeread något i denna stil
+            // Execute the SQL command to insert the ad into the database
             await command.ExecuteNonQueryAsync();
-
-            // Return a success response
-            ctx.Response.StatusCode = 200;
-            await ctx.Response.WriteAsync("Ad added successfully");
         }
         catch (Exception ex)
         {
@@ -61,10 +59,16 @@ namespace Server;
    
     }
 
-    public class Ad
+      public record Ad
     {
-        public string Name { get; init; }
-        //osv osv hela formuläret
+        public int Id { get; init; }
+        public string Headline { get; init; }
+        public string County { get; init; }
+        public string Occupation { get; init; }
+        public int Age { get; init; }
+        public bool Car { get; init; }
+        public string Gender { get; init; }
+ 
     }
 
 
