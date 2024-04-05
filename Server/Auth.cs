@@ -3,6 +3,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using MySql.Data.MySqlClient;
 using Newtonsoft.Json;
+using static Server.Auth;
 
 
 namespace Server
@@ -17,18 +18,45 @@ namespace Server
 
             // Implement authentication logic using loginRequest.Username and loginRequest.Password
 
-            // Example authentication logic:
-            if (loginRequest.Username == "rosa.parks" && loginRequest.Password == "bus")
+            try
             {
-                // Authentication successful
-                Console.WriteLine(loginRequest.Username + loginRequest.Password);
-                return Results.Ok("Authentication successful");
+                string result = string.Empty;
+                string query = "SELECT id, role FROM users WHERE email = @Email AND password = @Password";
+                MySqlCommand command = new(query, state.DB);
+
+                command.Parameters.AddWithValue("@Email", loginRequest.Email);
+                command.Parameters.AddWithValue("@Password", loginRequest.Password);
+
+                using MySqlDataReader reader = command.ExecuteReader();
+
+
+                if (reader.Read())
+                {
+                    int id = reader.GetInt32("id");
+                    string role = reader.GetString("role");
+
+                    Console.WriteLine(id + ", " + role);
+                    var claims = new List<Claim>
+                    {
+                        new(ClaimTypes.NameIdentifier, id.ToString()),
+                        new(ClaimTypes.Role, role),
+                    };
+
+                    var claimsIdentity = new ClaimsIdentity(claims, "opa23.molez.vivimos");
+                    await ctx.SignInAsync("opa23.molez.vivimos", new ClaimsPrincipal(claimsIdentity));
+
+
+                    return TypedResults.Ok("Signed in");
+                }
+                return TypedResults.Problem("Wrong email or password");
             }
-            else
+            catch (Exception ex)
             {
-                // Authentication failed
-                return Results.BadRequest("Authentication failed");
+                Console.WriteLine($"Error during login: {ex.Message}");
+                return TypedResults.Problem("An error occurred during login.");
             }
+
+       
 
 
         }
@@ -51,7 +79,7 @@ namespace Server
 
         public record LoginRequest
         {
-            public string Username { get; init; }
+            public string Email { get; init; }
             public string Password { get; init; }
         }
 
