@@ -1,8 +1,9 @@
 ﻿
-/*using System.Security.Claims;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using MySql.Data.MySqlClient;
 using Newtonsoft.Json;
+using static Server.Auth;
 
 
 namespace Server
@@ -17,18 +18,44 @@ namespace Server
 
             // Implement authentication logic using loginRequest.Username and loginRequest.Password
 
-            // Example authentication logic:
-            if (loginRequest.Username == "rosa.parks" && loginRequest.Password == "bus")
+            try
             {
-                // Authentication successful
-                Console.WriteLine(loginRequest.Username + loginRequest.Password);
-                return Results.Ok("Authentication successful");
+                string query = "SELECT id, role FROM users WHERE username = @Username AND password = @Password";
+                MySqlCommand command = new(query, state.DB);
+
+                command.Parameters.AddWithValue("@Username", loginRequest.Username);
+                command.Parameters.AddWithValue("@Password", loginRequest.Password);
+
+                using MySqlDataReader reader = command.ExecuteReader();
+
+
+                if (reader.Read())
+                {
+                    int id = reader.GetInt32("id");
+                    string role = reader.GetString("role");
+
+                    Console.WriteLine(id + ", " + role);
+                    var claims = new List<Claim>
+                    {
+                        new(ClaimTypes.NameIdentifier, id.ToString()),
+                        new(ClaimTypes.Role, role),
+                    };
+
+                    var claimsIdentity = new ClaimsIdentity(claims, "opa23.molez.vivimos");
+                    await ctx.SignInAsync("opa23.molez.vivimos", new ClaimsPrincipal(claimsIdentity));
+
+
+                    return TypedResults.Ok("Signed in");
+                }
+                return TypedResults.Problem("Wrong email or password");
             }
-            else
+            catch (Exception ex)
             {
-                // Authentication failed
-                return Results.BadRequest("Authentication failed");
+                Console.WriteLine($"Error during login: {ex.Message}");
+                return TypedResults.Problem("An error occurred during login.");
             }
+
+
 
 
         }
@@ -39,20 +66,49 @@ namespace Server
             var requestBody = await new StreamReader(ctx.Request.Body).ReadToEndAsync();
             var user = JsonConvert.DeserializeObject<User>(requestBody);
 
+            try
+            {
+                string query = @"
+            INSERT INTO users (
+                username, email, password
+            ) 
+            VALUES (
+                @Username, @email, @password
+            )";
+
+                MySqlCommand command = new MySqlCommand(query, state.DB);
+
+
+                command.Parameters.AddWithValue("@Username", user.Username);
+                command.Parameters.AddWithValue("@Email", user.Email);
+                command.Parameters.AddWithValue("@Password", user.Password);
+
+
+                // Execute the SQL command to insert the ad into the database
+                await command.ExecuteNonQueryAsync(); 
+                ctx.Response.StatusCode = 200;
+                await ctx.Response.WriteAsync("User registered successfully"); 
+                return TypedResults.Ok("Ad added successfully");
+              
+            }
+
+            catch (Exception ex)
+            {
+                // Handle any exceptions that occur during database interaction
+                Console.WriteLine($"Error adding user: {ex.Message}");
+                return TypedResults.Problem("An error occurred while adding the user.");
+            }
+
             // Add logic to save the user to the database
             // For example:
             // userService.Register(user);
-
-            // Return a success response
-            ctx.Response.StatusCode = 200;
-            await ctx.Response.WriteAsync("User registered successfully");
         }
-        
+
 
         public record LoginRequest
         {
-            public string Username { get; init; }
-            public string Password { get; init; }
+            public string? Username { get; init; }
+            public string? Password { get; init; }
         }
 
 
@@ -67,6 +123,5 @@ namespace Server
         }
     }
 }
-*/
 
 
