@@ -20,10 +20,10 @@ namespace Server
 
             try
             {
-                string query = "SELECT id, role FROM users WHERE email = @Email AND password = @Password";
+                string query = "SELECT id, role FROM users WHERE username = @Username AND password = @Password";
                 MySqlCommand command = new(query, state.DB);
 
-                command.Parameters.AddWithValue("@Email", loginRequest.Email);
+                command.Parameters.AddWithValue("@Username", loginRequest.Username);
                 command.Parameters.AddWithValue("@Password", loginRequest.Password);
 
                 using MySqlDataReader reader = command.ExecuteReader();
@@ -78,8 +78,8 @@ namespace Server
 
         public record LoginRequest
         {
-            public string Email { get; init; }
-            public string Password { get; init; }
+            public string? Username { get; init; }
+            public string? Password { get; init; }
         }
 
 
