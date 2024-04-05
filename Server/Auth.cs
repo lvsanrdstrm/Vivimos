@@ -20,7 +20,6 @@ namespace Server
 
             try
             {
-                string result = string.Empty;
                 string query = "SELECT id, role FROM users WHERE email = @Email AND password = @Password";
                 MySqlCommand command = new(query, state.DB);
 
