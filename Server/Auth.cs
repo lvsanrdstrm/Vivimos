@@ -1,5 +1,5 @@
 ﻿
-using System.Security.Claims;
+/*using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using MySql.Data.MySqlClient;
 using Newtonsoft.Json;
@@ -67,6 +67,6 @@ namespace Server
         }
     }
 }
-
+*/
 
 
