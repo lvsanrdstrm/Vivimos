@@ -77,7 +77,7 @@ namespace Server;
             INSERT INTO ads (
                 headline, county, dwelling, dwellingOther, occupation, relStatus, partnerInfo, 
                 childrenNum, childrenHome, pets, dog, cat, bird, horse, other, city, cityAlternative, 
-                forest, sea, culture, shopping, car, car_info, hobbies, presentation, age, gender, 
+                forest, sea, culture, shopping, car, carInfo, hobbies, presentation, age, gender, 
                 adActive, endDate, userId, endTimestamp, children
             ) 
             VALUES (
