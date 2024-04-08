@@ -17,7 +17,8 @@ function AdList() {
       console.log(response)
       let items = await response.json()
       console.log(items)
-      items = items.filter(item => item.adActive === true)
+      console.log(items[0].AdActive)
+      items = items.filter(item => item.AdActive === true)
       console.log(items)
       setItems(items)
       setAds(items)
@@ -35,20 +36,20 @@ function AdList() {
   </section>
 
   function ItemCard(ad) {
-
-    const { id, headline, gender, age, city, county, occupation, endDate } = ad
+    console.log(ad)
+    const { Id, Headline, Gender, Age, City, County, Occupation, EndDate } = ad
 
     const handleOfferButton = () => {
-      navigate(`/ad/${id}/bid`)
+      navigate(`/ad/${Id}/bid`)
     }
 
     return (
-      <div className='itemCard-container' key={id}>
+      <div className='itemCard-container' key={Id}>
         <div className='ad-info'>
 
-          <h3 className="ad-title"><Link to={`/ad/${id}`}>{headline}</Link></h3>
-          <p>En {age} år gammal {gender.toLowerCase()}, från {county} <br /> som är {occupation.toLowerCase()} och bor i {city.toLowerCase()}.</p>&nbsp;
-          <p>Denna annons är aktiv till och med {endDate}.</p>
+          <h3 className="ad-title"><Link to={`/ad/${Id}`}>{Headline}</Link></h3>
+         
+          <p>Denna annons är aktiv till och med {EndDate}.</p>
 
 
         </div>
