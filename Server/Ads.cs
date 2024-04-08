@@ -6,16 +6,17 @@ namespace Server;
 
    internal class Ads
     {
-        public static string AllAds(State state, HttpContext ctx)
+
+    public static string AllAds(State state, HttpContext ctx)
         {
             List<Ad> ads = new List<Ad>();
             string query = "SELECT * FROM ads";
             MySqlCommand command = new MySqlCommand(query, state.DB);
 
-            using (MySqlDataReader reader = command.ExecuteReader())
+        using (MySqlDataReader reader = command.ExecuteReader())
+        {
+            while (reader.Read())
             {
-                while (reader.Read())
-                {
                 Ad ad = new Ad
                 {
                     Id = reader.IsDBNull(reader.GetOrdinal("id")) ? (int?)null : reader.GetInt32("id"),
@@ -56,13 +57,12 @@ namespace Server;
                 ads.Add(ad);
 
             }
+
+
+            return JsonConvert.SerializeObject(ads);
+            /*  await ctx.Response.WriteAsync(responseJson); // Await the WriteAsync method call
+             return Results.Ok(); // Return an appropriate result */
         }
-
-
-            return  JsonConvert.SerializeObject(ads);
-           /*  await ctx.Response.WriteAsync(responseJson); // Await the WriteAsync method call
-            return Results.Ok(); // Return an appropriate result */
-
     }
 
     public static async Task<IResult> AddAd(State state, HttpContext ctx)

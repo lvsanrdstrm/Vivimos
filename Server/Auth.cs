@@ -66,37 +66,33 @@ namespace Server
 
             try
             {
-                string query = @"
-            INSERT INTO users (
-                username, email, password
-            ) 
-            VALUES (
-                @Username, @email, @password
-            )";
+                // Create a SQL query to insert the user into the database
+                string query = "INSERT INTO users (username, email, password, role) VALUES (@Username, @Email, @Password, 'user')";
 
+                // Create a MySqlCommand object with the SQL query and database connection
                 MySqlCommand command = new MySqlCommand(query, state.DB);
 
-
+                // Add parameters to the command to prevent SQL injection
                 command.Parameters.AddWithValue("@Username", user.Username);
                 command.Parameters.AddWithValue("@Email", user.Email);
                 command.Parameters.AddWithValue("@Password", user.Password);
 
-
-                // Execute the SQL command to insert the ad into the database
+                // Execute the SQL command to insert the user into the database
                 await command.ExecuteNonQueryAsync();
-                return TypedResults.Ok("Ad added successfully");
+                return TypedResults.Ok("User registered successfully");
             }
-            catch (Exception ex)
+
+            catch (MySqlException ex) when (ex.Number == 1062) // Error code for duplicate entry
             {
-                // Handle any exceptions that occur during database interaction
-                Console.WriteLine($"Error adding ad: {ex.Message}");
-                return TypedResults.Problem("An error occurred while adding the ad.");
+                Console.WriteLine($"Email already registered: {ex.Message}");
+                return TypedResults.Problem("Email address is already registered.");
             }
 
             // Add logic to save the user to the database
             // For example:
             // userService.Register(user);
         }
+
 
 
         public record LoginRequest
@@ -110,12 +106,10 @@ namespace Server
 
         public class User
         {
-            public string Username { get; set; }
-            public string Email { get; set; }
-            public string Password { get; set; }
+            public string? Username { get; set; }
+            public string? Email { get; set; }
+            public string? Password { get; set; }
             // Add any other properties as needed
         }
     }
 }
-
-
