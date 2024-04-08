@@ -6,8 +6,8 @@ namespace Server;
 
    internal class Ads
     {
-    public static string AllAds(State state, HttpContext ctx)
-    {
+        public static string AllAds(State state, HttpContext ctx)
+        {
             List<Ad> ads = new List<Ad>();
             string query = "SELECT * FROM ads";
             MySqlCommand command = new MySqlCommand(query, state.DB);
@@ -18,41 +18,39 @@ namespace Server;
                 {
                 Ad ad = new Ad
                 {
-
-                    Id = reader.GetInt32("id"),
-                    Headline = reader.GetString("headline"),
-                    County = reader.GetString("county"),
-                    Dwelling = reader.GetString("dwelling"),
-                    DwellingOther = reader.GetString("dwellingOther"),
-                    Occupation = reader.GetString("occupation"),
-                    RelStatus = reader.GetString("relStatus"),
-                    PartnerInfo = reader.GetString("partnerInfo"),
-                    ChildrenNum = reader.GetInt32("childrenNum"),
-                    ChildrenHome = reader.GetString("childrenHome"),
-                    Pets = reader.GetString("pets"),
-                    Dog = reader.GetString("dog"),
-                    Cat = reader.GetString("cat"),
-                    Bird = reader.GetString("bird"),
-                    Horse = reader.GetString("horse"),
-                    Other = reader.GetString("other"),
-                    City = reader.GetString("city"),
-                    CityAlternative = reader.GetString("cityAlternative"),
-                    Forest = reader.GetString("forest"),
-                    Sea = reader.GetString("sea"),
-                    Culture = reader.GetString("culture"),
-                    Shopping = reader.GetString("shopping"),
-                    Car = reader.GetBoolean("car"),
-                    CarInfo = reader.GetString("carInfo"),
-                    Hobbies = reader.GetString("hobbies"),
-                    Presentation = reader.GetString("presentation"),
-                    Age = reader.GetInt32("age"),
-                    Gender = reader.GetString("gender"),
-                    AdActive = reader.GetBoolean("adActive"),
-                    EndDate = reader.GetDateTime("endDate"),
-                    UserId = reader.GetInt32("userId"),
-                    EndTimestamp = reader.GetInt32("endTimestamp"),
-                    Children = reader.GetString("children")
-
+                        Id = reader.GetInt32("id"),
+     Headline = reader.GetString("headline"),
+     County = reader.GetString("county"),
+     Dwelling = reader.GetString("dwelling"),
+     DwellingOther = reader.GetString("dwellingOther"),
+     Occupation = reader.GetString("occupation"),
+     RelStatus = reader.GetString("relStatus"),
+     PartnerInfo = reader.GetString("partnerInfo"),
+     ChildrenNum = reader.GetInt32("childrenNum"),
+     ChildrenHome = reader.GetString("childrenHome"),
+     Pets = reader.GetString("pets"),
+     Dog = reader.GetString("dog"),
+     Cat = reader.GetString("cat"),
+     Bird = reader.GetString("bird"),
+     Horse = reader.GetString("horse"),
+     Other = reader.GetString("other"),
+     City = reader.GetString("city"),
+     CityAlternative = reader.GetString("cityAlternative"),
+     Forest = reader.GetString("forest"),
+     Sea = reader.GetString("sea"),
+     Culture = reader.GetString("culture"),
+     Shopping = reader.GetString("shopping"),
+     Car = reader.GetBoolean("car"),
+     CarInfo = reader.GetString("carInfo"),
+     Hobbies = reader.GetString("hobbies"),
+     Presentation = reader.GetString("presentation"),
+     Age = reader.GetInt32("age"),
+     Gender = reader.GetString("gender"),
+     AdActive = reader.GetBoolean("adActive"),
+     EndDate = reader.GetDateTime("endDate"),
+     UserId = reader.GetInt32("userId"),
+     EndTimestamp = reader.GetInt32("endTimestamp"),
+     Children = reader.GetString("children")
                 };
 
                 ads.Add(ad);
@@ -61,7 +59,9 @@ namespace Server;
         }
 
 
-        return JsonConvert.SerializeObject(ads);
+            return  JsonConvert.SerializeObject(ads);
+           /*  await ctx.Response.WriteAsync(responseJson); // Await the WriteAsync method call
+            return Results.Ok(); // Return an appropriate result */
 
     }
 
