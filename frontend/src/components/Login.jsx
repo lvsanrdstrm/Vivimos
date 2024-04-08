@@ -218,6 +218,7 @@ function Login() {
       if (response.ok) {
         const data = await response.json();
         console.log('New user added:', data);
+        setActiveUser({ ...userData, loggedIn: true });
       } else {
         console.error('Error adding new user:', response.statusText);
       }
