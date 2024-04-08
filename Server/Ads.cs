@@ -62,8 +62,6 @@ namespace Server;
 
 
         return JsonConvert.SerializeObject(ads);
-        /*await ctx.Response.WriteAsync(responseJson); // Await the WriteAsync method call
-        return Results.Ok(); // Return an appropriate result*/
 
     }
 
@@ -92,7 +90,7 @@ namespace Server;
             MySqlCommand command = new MySqlCommand(query, state.DB);
 
 
-            command.Parameters.AddWithValue("@Headline", adData?.Headline);
+            command.Parameters.AddWithValue("@Headline", adData.Headline);
             command.Parameters.AddWithValue("@County", adData.County);
             command.Parameters.AddWithValue("@Dwelling", adData.Dwelling);
             command.Parameters.AddWithValue("@DwellingOther", adData.DwellingOther);

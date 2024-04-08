@@ -3,6 +3,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using MySql.Data.MySqlClient;
 using Newtonsoft.Json;
+using static Server.Ads;
 using static Server.Auth;
 
 
@@ -55,11 +56,6 @@ namespace Server
                 return TypedResults.Problem("An error occurred during login.");
             }
 
-       
-
-
-
-
         }
 
         public static async Task<IResult> Register(State state, HttpContext ctx)
@@ -87,18 +83,14 @@ namespace Server
 
 
                 // Execute the SQL command to insert the ad into the database
-                await command.ExecuteNonQueryAsync(); 
-                ctx.Response.StatusCode = 200;
-                await ctx.Response.WriteAsync("User registered successfully"); 
+                await command.ExecuteNonQueryAsync();
                 return TypedResults.Ok("Ad added successfully");
-              
             }
-
             catch (Exception ex)
             {
                 // Handle any exceptions that occur during database interaction
-                Console.WriteLine($"Error adding user: {ex.Message}");
-                return TypedResults.Problem("An error occurred while adding the user.");
+                Console.WriteLine($"Error adding ad: {ex.Message}");
+                return TypedResults.Problem("An error occurred while adding the ad.");
             }
 
             // Add logic to save the user to the database
