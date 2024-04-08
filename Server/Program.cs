@@ -29,9 +29,9 @@ try
     var app = builder.Build();
 
    app.MapPost("/ads", Ads.AddAd);
-   app.MapPost("/api/auth/register", Auth.Register);
+   //app.MapPost("/api/auth/register", Auth.Register);
    app.MapPost("/auth/login", Auth.Login);
-    //app.MapGet("/ads", Ads.AllAds); // denna ska hämta alla
+   app.MapGet("/ads", Ads.AllAds); // denna ska hämta alla
    app.Run("http://localhost:3001");
 
 }
