@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 function AdDetailed() {
-  const {id} = useParams()
+  const { id } = useParams()
   const [ad, setAd] = useState(null)
   const navigate = useNavigate()
 
@@ -28,7 +28,7 @@ function AdDetailed() {
     kvinna: "Hon",
     annat: "Hen"
   };
-  const pronomen = pronomenLista[ad.kön.toLowerCase()];
+  const pronomen = pronomenLista[ad.gender.toLowerCase()];
 
   const pets = ["Hund", "Katt", "Fågel", "Häst"];
   let petsList = [];
@@ -38,14 +38,14 @@ function AdDetailed() {
       petsList.push(pet.toLowerCase());
     }
   }
-  let kidsSentence = ad.barnAntal === "" ? `${pronomen} har inga barn.` : `${pronomen} har ${ad.barnAntal} barn`;
+  let kidsSentence = ad.childrenNum === "" ? `${pronomen} har inga barn.` : `${pronomen} har ${ad.childrenNum} barn`;
 
-  if (ad.barnBoende !== "") {
-    if (ad.barnBoende.toLowerCase() === "ja") {
+  if (ad.childrenHome !== "") {
+    if (ad.childrenHome.toLowerCase() === "ja") {
       kidsSentence += `, som ${pronomen.toLowerCase()} bor tillsammans med.`;
-    } else if (ad.barnBoende.toLowerCase() === "delvis") {
+    } else if (ad.childrenHome.toLowerCase() === "delvis") {
       kidsSentence += `, som ${pronomen.toLowerCase()} delvis bor tillsammans med.`;
-    } else if (ad.barnBoende.toLowerCase() === "nej") {
+    } else if (ad.childrenHome.toLowerCase() === "nej") {
       kidsSentence += `, som ${pronomen.toLowerCase()} inte bor tillsammans med.`;
     }
   }
@@ -61,14 +61,14 @@ function AdDetailed() {
 
   let petsString = petsList.join(", ");
 
-  let petsSentence = ad.husdjur === "" ? `${pronomen} har inga husdjur.` : `${pronomen} har ${petsString}.`;
+  let petsSentence = ad.pets === "" ? `${pronomen} har inga husdjur.` : `${pronomen} har ${petsString}.`;
 
-  if (ad.Annat) {
-    petsSentence += ` ${pronomen} har även ${ad.Annat.toLowerCase()}.`;
+  if (ad.other) {
+    petsSentence += ` ${pronomen} har även ${ad.other.toLowerCase()}.`;
   }
   let relStatusSentence = "";
 
-  switch(ad.relstatus.toLowerCase()) {
+  switch (ad.relStatus.toLowerCase()) {
     case "ensamvarg":
       relStatusSentence = `${pronomen} är en övertygad singel, en ensamvarg.`;
       break
@@ -95,23 +95,23 @@ function AdDetailed() {
 
   return (
     <div>
-      <h1>{ad.rubrik}</h1>
+      <h1>{ad.headline}</h1>
       <p>{ad.presentation}</p>
-      <p>Annonsören är en {ad.ålder} år gammal {ad.kön.toLowerCase()},
-        från {ad.län} län. <br/> {pronomen} bor i {ad.boende.toLowerCase()} i {ad.stad.toLowerCase()}. </p>
+      <p>Annonsören är en {ad.age} år gammal {ad.gender.toLowerCase()},
+        från {ad.county} län. <br /> {pronomen} bor i {ad.dwelling.toLowerCase()} i {ad.city.toLowerCase()}. </p>
       <p>{nearbySentence}</p>
 
       <p>{petsSentence}</p>
       <p>{relStatusSentence}</p>
       <p>{kidsSentence}</p>
-      {ad.sysselsättning && ad.sysselsättning !== "" && (
-        <p>{pronomen} är verksam som {ad.sysselsättning}</p>
+      {ad.occupation && ad.occupation !== "" && (
+        <p>{pronomen} är verksam som {ad.occupation}</p>
       )}
-      {ad.fritidsintressen && ad.fritidsintressen !== "" && (
-        <p>{pronomen} har angivit följande fritidsintressen: {ad.fritidsintressen}</p>
+      {ad.hobbies && ad.hobbies !== "" && (
+        <p>{pronomen} har angivit följande fritidsintressen: {ad.hobbies}</p>
       )}
-      <p>Denna annons är aktiv till och med {ad.enddate}.</p>
-      {ad.bids ? (<p>Antal bud: {ad.bids.length}</p>) : null}
+      <p>Denna annons är aktiv till och med {ad.endDate}.</p>
+      {/*ad.bids ? (<p>Antal bud: {ad.bids.length}</p>) : null*/}
       <button onClick={handleOfferButton}>Lägg ett bud</button>
     </div>
   );
