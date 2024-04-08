@@ -92,8 +92,8 @@ if (!userData) {
           <h2>Aktuell auktion</h2>
           {adData.length > 0 ? (
         <>
-          <h3>{adData[0].rubrik}</h3>
-          <p>{adData[0].län}</p>
+          <h3>{adData[0].headline}</h3>
+          <p>{adData[0].county}</p>
         </>
       ) : (
         <p>Ingen aktuell auktion</p>

@@ -102,27 +102,27 @@ function Section2({ form, handleChange }) {
       </label>
       <label>
         Gård
-        <input type="radio" name="dwelling" value="Gård" checked={form.dwelling === "Gård"} onChange={handleChange} />
+        <input type="radio" name="boende" value="Gård" checked={form.boende === "Gård"} onChange={handleChange} />
       </label>
       <label>
         Sommarstuga
-        <input type="radio" name="dwelling" value="Sommarstuga" checked={form.dwelling === "Sommarstuga"}
+        <input type="radio" name="boende" value="Sommarstuga" checked={form.boende === "Sommarstuga"}
           onChange={handleChange} />
       </label>
       <label>
         Husvagn
-        <input type="radio" name="dwelling" value="Husvagn" checked={form.dwelling === "Husvagn"} onChange={handleChange} />
+        <input type="radio" name="boende" value="Husvagn" checked={form.boende === "Husvagn"} onChange={handleChange} />
       </label>
       <label>
         Trappuppgång
-        <input type="radio" name="dwelling" value="Trappuppgång" checked={form.dwelling === "Trappuppgång"}
+        <input type="radio" name="boende" value="Trappuppgång" checked={form.boende === "Trappuppgång"}
           onChange={handleChange} />
       </label>
       <label>
         Annat, vilket?
-        <input type="radio" name="dwelling" value="Annat" checked={form.dwelling === "Annat"} onChange={handleChange} />
+        <input type="radio" name="boende" value="Annat" checked={form.boende === "Annat"} onChange={handleChange} />
         {form.boende === "Annat" && (
-          <input type="text" name="dwellingOther" value={form.dwellingOther} onChange={handleChange}
+          <input type="text" name="boendeAnnat" value={form.boendeAnnat} onChange={handleChange}
             placeholder="Ange boende" />
         )}
       </label>
@@ -148,19 +148,19 @@ function Section2({ form, handleChange }) {
       <h3>Ditt boende är:</h3>
       <label>
         Naturnära (skog)
-        <input type="checkbox" name="forest" checked={form.forest !== ""} onChange={handleChange} />
+        <input type="checkbox" name="Skog" checked={form.Skog !== ""} onChange={handleChange} />
       </label>
       <label>
         Naturnära (hav/sjö)
-        <input type="checkbox" name="sea" checked={form.sea !== ""} onChange={handleChange} />
+        <input type="checkbox" name="Hav" checked={form.Hav !== ""} onChange={handleChange} />
       </label>
       <label>
         Kulturnära (biografer, teater, muséer, gallerier)
-        <input type="checkbox" name="culture" checked={form.culture !== ""} onChange={handleChange} />
+        <input type="checkbox" name="Kultur" checked={form.Kultur !== ""} onChange={handleChange} />
       </label>
       <label>
         Shoppingnära
-        <input type="checkbox" name="shopping" checked={form.shopping !== ""} onChange={handleChange} />
+        <input type="checkbox" name="Shopping" checked={form.Shopping !== ""} onChange={handleChange} />
       </label>
       <h3>Har du bil?</h3>
       <label>
@@ -188,8 +188,8 @@ function Section2({ form, handleChange }) {
         <>
           <p>Märke/modell/år:</p>
           <input type="text"
-            name="carInfo"
-            value={form.carInfo}
+            name="bilinfo"
+            value={form.bilinfo}
             onChange={handleChange} />
         </>
       )}
@@ -204,14 +204,14 @@ function Section3({ form, handleChange }) {
       <h2>Nu lite om vad du fyller ditt liv med</h2>
       <h3>Vilken sysselsättning har du?:</h3>
       <input type="text"
-        name="occupation"
-        value={form.occupation}
+        name="sysselsättning"
+        value={form.sysselsättning}
         onChange={handleChange} />
 
       <h3>Vad gör du på fritiden? Skriv upp till fem fritidsintressen:</h3>
       <input type="text"
-        name="hobbies"
-        value={form.hobbies}
+        name="fritidsintressen"
+        value={form.fritidsintressen}
         onChange={handleChange} />
 
 
@@ -310,8 +310,8 @@ function Section4({ form, handleChange }) {
         <>
           <p>Namn och ålder på din/a partner/s?:</p>
           <input type="text"
-            name="partnerInfo"
-            value={form.partnerInfo}
+            name="partnerinfo"
+            value={form.partnerinfo}
             onChange={handleChange} />
         </>
       )}
@@ -473,8 +473,8 @@ function Section5({ form, handleChange }) {
 
       <h3>Och slutligen, skriv en lockande rubrik till din annons:</h3>
       <input type="text"
-        name="headline"
-        value={form.headline}
+        name="rubrik"
+        value={form.rubrik}
         onChange={handleChange} />
 
       &nbsp;
