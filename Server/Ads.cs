@@ -1,9 +1,10 @@
 ﻿using MySql.Data.MySqlClient;
 using Newtonsoft.Json;
+using Org.BouncyCastle.Asn1.Cmp;
 
 namespace Server;
 
-    internal class Ads
+   internal class Ads
     {
         public static string AllAds(State state, HttpContext ctx)
         {
@@ -61,7 +62,6 @@ namespace Server;
             return  JsonConvert.SerializeObject(ads);
            
     }
-
 
     public static async Task<IResult> AddAd(State state, HttpContext ctx)
     {
@@ -171,9 +171,6 @@ namespace Server;
         public int? EndTimestamp { get; init; }
         public string? Children { get; init; }
     }
-
-
-
 
 }
 

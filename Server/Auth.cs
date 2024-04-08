@@ -3,6 +3,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using MySql.Data.MySqlClient;
 using Newtonsoft.Json;
+using static Server.Ads;
 using static Server.Auth;
 
 
@@ -55,11 +56,6 @@ namespace Server
                 return TypedResults.Problem("An error occurred during login.");
             }
 
-       
-
-
-
-
         }
 
         public static async Task<IResult> Register(State state, HttpContext ctx)
@@ -91,12 +87,10 @@ namespace Server
                 Console.WriteLine($"Email already registered: {ex.Message}");
                 return TypedResults.Problem("Email address is already registered.");
             }
-            catch (MySqlException ex)
-            {
-                Console.WriteLine($"Database error: {ex.Message}");
-                return TypedResults.Problem("An error occurred while accessing the database.");
-            }
 
+            // Add logic to save the user to the database
+            // For example:
+            // userService.Register(user);
         }
 
 

@@ -28,9 +28,6 @@ try
     builder.Services.AddAuthentication().AddCookie("opa23.molez.vivimos");
     var app = builder.Build();
 
-
-
-
    app.MapPost("/ads", Ads.AddAd);
    app.MapPost("/auth/register", Auth.Register);
     app.MapPost("/auth/login", Auth.Login);
