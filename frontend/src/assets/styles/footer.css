@@ -1,0 +1,19 @@
+.footer-container {
+  position: relative;
+  bottom: 0;
+  height: 15vh;
+  width: 100%;
+  padding: 2rem;
+  padding-top: 4rem;
+  padding-bottom: 1rem;
+  font-family: 'Fredericka the Great';
+  color: rgba(187, 180, 166, 0.877);
+}
+
+.footer-container>h3 {
+
+  text-align: center;
+  background-color: rgba(110, 107, 100, 0.582);
+  box-shadow: 1px 1px 1px rgba(124, 13, 28, 0.836);
+  border-radius: 5px;
+}

@@ -1,0 +1,35 @@
+@import url('https://fonts.googleapis.com/css2?family=Amatic+SC&family=Fredericka+the+Great&display=swap');
+
+:root {
+  --background-scroll-y: 0%;
+}
+
+.page-container {
+  width: 67vw;
+  margin: auto;
+  background-color: rgba(207, 199, 182, 0.644);
+  padding: 2rem;
+  height: 220vh;
+  overflow: auto;
+  text-align: justify;
+  font-family: 'Fredericka the Great';
+  display: flex;
+  flex-direction: column;
+  align-items: normal;
+}
+
+.page-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.page-container::-webkit-scrollbar-thumb {
+  background-color: rgba(207, 199, 182, 0.644);
+}
+
+.page-container::-webkit-scrollbar-track {}
+
+.page {
+  background-size: cover;
+  background-position: center;
+  background-image: url('../images/houselightcopy.jpg');
+}

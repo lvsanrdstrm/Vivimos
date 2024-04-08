@@ -1,0 +1,80 @@
+@import url('https://fonts.googleapis.com/css2?family=Amatic+SC&family=Fredericka+the+Great&display=swap');
+
+.itemCard-container {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem;
+  margin-bottom: 10px;
+  background-color: rgba(110, 107, 100, 0.719);
+  box-shadow: 1px 1px 1px rgba(124, 13, 28, 0.836);
+  border-radius: 5px;
+  font-family: 'Fredericka the Great';
+  transition: background-color 0.4s, color 0.5s;
+  position: relative;
+}
+
+.itemCard-container:hover {
+  background-color: rgba(43, 42, 40, 0.849);
+  color: rgba(236, 233, 228, 0.781);
+}
+
+.itemCard-container * {
+  transition: color 0.4s;
+}
+
+.itemCard-container:hover * {
+  color: rgba(236, 233, 228, 0.781);
+}
+
+.ad-title {
+  margin-bottom: 6px;
+}
+
+a {
+  text-decoration: none;
+  color: black;
+}
+
+ul {
+  list-style-type: none;
+}
+
+h2 {
+  margin-bottom: 10px;
+}
+
+button {
+  cursor: pointer;
+  align-self: last baseline;
+}
+
+.bidPaddle {
+  width: 50px;
+}
+
+.button-container {
+  position: absolute;
+  bottom: 1rem;
+  right: 6px;
+}
+
+.ad-right {
+  display: flex;
+  flex-direction: column;
+}
+
+.bidPaddle {
+  position: absolute;
+  height: 35px;
+  width: auto;
+  bottom: 40px;
+  right: 16px;
+  background-color: rgba(124, 13, 28, 0.404);
+  border-radius: 30px;
+  padding: 3px;
+}
+
+.current {
+  margin-left: 5px;
+  margin-top: 24px;
+}

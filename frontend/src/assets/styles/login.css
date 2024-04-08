@@ -1,0 +1,36 @@
+.login-container {
+  position: absolute;
+  right: 10px;
+  top: 15px;
+  display: flex;
+  font-family: 'Fredericka the Great';
+}
+
+.login-form {
+  display: inline;
+  font-family: 'Fredericka the Great';
+}
+
+
+input {
+  margin-right: 10px;
+  font-family: 'Fredericka the Great';
+  background-color: rgba(206, 201, 190, 0.815);
+  border-radius: 5px;
+  border-width: 1px;
+}
+
+button {
+  margin-right: 10px;
+  background-color: rgba(207, 199, 182, 0.582);
+  border-width: 1px;
+  border-radius: 5px;
+  font-family: 'Fredericka the Great';
+  transition: background-color 0.5s, transform 0.5s;
+}
+
+button:hover {
+  background-color: rgba(54, 53, 49, 0.849);
+  transform: scale(1.1);
+  color: rgba(236, 233, 228, 0.781);
+}

@@ -1,0 +1,29 @@
+.modal {
+  position: fixed;
+  top: 30vh;
+  left: 50vw;
+  transform: translate(-50%, -50%);
+  background-color: rgb(168, 158, 135);
+  padding: 2rem;
+  box-shadow: 0 2px 2px;
+  border-radius: 5px;
+  z-index: 1000;
+  font-family: 'Fredericka the Great';
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.modal-header {
+  cursor: pointer;
+}
+
+.modal-heading {
+  margin-bottom: 1rem;
+}
+
+.modal-input {
+  width: 100%;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+}

@@ -1,0 +1,27 @@
+.header-container {
+  width: 100%;
+  padding: 3vw;
+  display: flexbox;
+}
+
+.login-header {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+}
+
+.logo {
+  display: block;
+  margin: auto;
+  width: 13vw;
+  background-color: rgba(236, 233, 228, 0.781);
+  border-radius: 50px;
+  transition: background-color 1s;
+  padding: 12px;
+}
+
+.logo:hover {
+  background-color: rgba(0, 0, 0, 0.541);
+  cursor: pointer;
+}
