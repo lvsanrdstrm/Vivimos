@@ -1,12 +1,13 @@
 ﻿using MySql.Data.MySqlClient;
 using Newtonsoft.Json;
+using Org.BouncyCastle.Asn1.Cmp;
 
 namespace Server;
 
-    internal class Ads
+   internal class Ads
     {
-        public static async Task<IResult> AllAds(State state, HttpContext ctx)
-        {
+    public static string AllAds(State state, HttpContext ctx)
+    {
             List<Ad> ads = new List<Ad>();
             string query = "SELECT * FROM ads";
             MySqlCommand command = new MySqlCommand(query, state.DB);
@@ -17,39 +18,41 @@ namespace Server;
                 {
                 Ad ad = new Ad
                 {
-                    Id = reader.IsDBNull(reader.GetOrdinal("id")) ? (int?)null : reader.GetInt32("id"),
-                    Headline = reader.IsDBNull(reader.GetOrdinal("headline")) ? null : reader.GetString("headline"),
-                    County = reader.IsDBNull(reader.GetOrdinal("county")) ? null : reader.GetString("county"),
-                    Dwelling = reader.IsDBNull(reader.GetOrdinal("dwelling")) ? null : reader.GetString("dwelling"),
-                    DwellingOther = reader.IsDBNull(reader.GetOrdinal("dwellingOther")) ? null : reader.GetString("dwellingOther"),
-                    Occupation = reader.IsDBNull(reader.GetOrdinal("occupation")) ? null : reader.GetString("occupation"),
-                    RelStatus = reader.IsDBNull(reader.GetOrdinal("relStatus")) ? null : reader.GetString("relStatus"),
-                    PartnerInfo = reader.IsDBNull(reader.GetOrdinal("partnerInfo")) ? null : reader.GetString("partnerInfo"),
-                    ChildrenNum = reader.IsDBNull(reader.GetOrdinal("childrenNum")) ? (int?)null : reader.GetInt32("childrenNum"),
-                    ChildrenHome = reader.IsDBNull(reader.GetOrdinal("childrenHome")) ? null : reader.GetString("childrenHome"),
-                    Pets = reader.IsDBNull(reader.GetOrdinal("pets")) ? null : reader.GetString("pets"),
-                    Dog = reader.IsDBNull(reader.GetOrdinal("dog")) ? null : reader.GetString("dog"),
-                    Cat = reader.IsDBNull(reader.GetOrdinal("cat")) ? null : reader.GetString("cat"),
-                    Bird = reader.IsDBNull(reader.GetOrdinal("bird")) ? null : reader.GetString("bird"),
-                    Horse = reader.IsDBNull(reader.GetOrdinal("horse")) ? null : reader.GetString("horse"),
-                    Other = reader.IsDBNull(reader.GetOrdinal("other")) ? null : reader.GetString("other"),
-                    City = reader.IsDBNull(reader.GetOrdinal("city")) ? null : reader.GetString("city"),
-                    CityAlternative = reader.IsDBNull(reader.GetOrdinal("cityAlternative")) ? null : reader.GetString("cityAlternative"),
-                    Forest = reader.IsDBNull(reader.GetOrdinal("forest")) ? null : reader.GetString("forest"),
-                    Sea = reader.IsDBNull(reader.GetOrdinal("sea")) ? null : reader.GetString("sea"),
-                    Culture = reader.IsDBNull(reader.GetOrdinal("culture")) ? null : reader.GetString("culture"),
-                    Shopping = reader.IsDBNull(reader.GetOrdinal("shopping")) ? null : reader.GetString("shopping"),
-                    Car = reader.IsDBNull(reader.GetOrdinal("car")) ? (bool?)null : reader.GetBoolean("car"),
-                    CarInfo = reader.IsDBNull(reader.GetOrdinal("carInfo")) ? null : reader.GetString("carInfo"),
-                    Hobbies = reader.IsDBNull(reader.GetOrdinal("hobbies")) ? null : reader.GetString("hobbies"),
-                    Presentation = reader.IsDBNull(reader.GetOrdinal("presentation")) ? null : reader.GetString("presentation"),
-                    Age = reader.IsDBNull(reader.GetOrdinal("age")) ? (int?)null : reader.GetInt32("age"),
-                    Gender = reader.IsDBNull(reader.GetOrdinal("gender")) ? null : reader.GetString("gender"),
-                    AdActive = reader.IsDBNull(reader.GetOrdinal("adActive")) ? (bool?)null : reader.GetBoolean("adActive"),
-                    EndDate = reader.IsDBNull(reader.GetOrdinal("endDate")) ? (DateTime?)null : reader.GetDateTime("endDate"),
-                    UserId = reader.IsDBNull(reader.GetOrdinal("userId")) ? (int?)null : reader.GetInt32("userId"),
-                    EndTimestamp = reader.IsDBNull(reader.GetOrdinal("endTimestamp")) ? (int?)null : reader.GetInt32("endTimestamp"),
-                    Children = reader.IsDBNull(reader.GetOrdinal("children")) ? null : reader.GetString("children")
+
+                    Id = reader.GetInt32("id"),
+                    Headline = reader.GetString("headline"),
+                    County = reader.GetString("county"),
+                    Dwelling = reader.GetString("dwelling"),
+                    DwellingOther = reader.GetString("dwellingOther"),
+                    Occupation = reader.GetString("occupation"),
+                    RelStatus = reader.GetString("relStatus"),
+                    PartnerInfo = reader.GetString("partnerInfo"),
+                    ChildrenNum = reader.GetInt32("childrenNum"),
+                    ChildrenHome = reader.GetString("childrenHome"),
+                    Pets = reader.GetString("pets"),
+                    Dog = reader.GetString("dog"),
+                    Cat = reader.GetString("cat"),
+                    Bird = reader.GetString("bird"),
+                    Horse = reader.GetString("horse"),
+                    Other = reader.GetString("other"),
+                    City = reader.GetString("city"),
+                    CityAlternative = reader.GetString("cityAlternative"),
+                    Forest = reader.GetString("forest"),
+                    Sea = reader.GetString("sea"),
+                    Culture = reader.GetString("culture"),
+                    Shopping = reader.GetString("shopping"),
+                    Car = reader.GetBoolean("car"),
+                    CarInfo = reader.GetString("carInfo"),
+                    Hobbies = reader.GetString("hobbies"),
+                    Presentation = reader.GetString("presentation"),
+                    Age = reader.GetInt32("age"),
+                    Gender = reader.GetString("gender"),
+                    AdActive = reader.GetBoolean("adActive"),
+                    EndDate = reader.GetDateTime("endDate"),
+                    UserId = reader.GetInt32("userId"),
+                    EndTimestamp = reader.GetInt32("endTimestamp"),
+                    Children = reader.GetString("children")
+
                 };
 
                 ads.Add(ad);
@@ -58,12 +61,11 @@ namespace Server;
         }
 
 
-            var responseJson = JsonConvert.SerializeObject(ads);
-            await ctx.Response.WriteAsync(responseJson); // Await the WriteAsync method call
-            return Results.Ok(); // Return an appropriate result
+        return JsonConvert.SerializeObject(ads);
+        /*await ctx.Response.WriteAsync(responseJson); // Await the WriteAsync method call
+        return Results.Ok(); // Return an appropriate result*/
 
     }
-
 
     public static async Task<IResult> AddAd(State state, HttpContext ctx)
     {
@@ -75,10 +77,10 @@ namespace Server;
         {
             string query = @"
             INSERT INTO ads (
-                headline, county, dwelling, dwelling_other, occupation, rel_status, partner_info, 
-                children_num, children_home, pets, dog, cat, bird, horse, other, city, city_alternative, 
-                forest, sea, culture, shopping, car, car_info, hobbies, presentation, age, gender, 
-                ad_active, end_date, user_id, end_timestamp, children
+                headline, county, dwelling, dwellingOther, occupation, relStatus, partnerInfo, 
+                childrenNum, childrenHome, pets, dog, cat, bird, horse, other, city, cityAlternative, 
+                forest, sea, culture, shopping, car, carInfo, hobbies, presentation, age, gender, 
+                adActive, endDate, userId, endTimestamp, children
             ) 
             VALUES (
                 @Headline, @County, @Dwelling, @DwellingOther, @Occupation, @RelStatus, @PartnerInfo,
@@ -90,7 +92,7 @@ namespace Server;
             MySqlCommand command = new MySqlCommand(query, state.DB);
 
 
-            command.Parameters.AddWithValue("@Headline", adData.Headline);
+            command.Parameters.AddWithValue("@Headline", adData?.Headline);
             command.Parameters.AddWithValue("@County", adData.County);
             command.Parameters.AddWithValue("@Dwelling", adData.Dwelling);
             command.Parameters.AddWithValue("@DwellingOther", adData.DwellingOther);
