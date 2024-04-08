@@ -12,7 +12,7 @@ using MySql.Data.MySqlClient;
 
 MySqlConnection? db = null;
 
-string connectionString = "server=localhost;uid=root;pwd=123;database=vivimos;port=3306";
+string connectionString = "server=localhost;uid=root;pwd=mypassword;database=vivimos;port=3306";
 var builder = WebApplication.CreateBuilder(args);
 
 
