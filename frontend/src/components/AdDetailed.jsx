@@ -8,17 +8,44 @@ function AdDetailed() {
 
 
   useEffect(() => {
-    fetch('/api/ads')
+
+    async function load(){
+      const response = await fetch(`/api/ad/${id}`)
+      console.log(response)
+      let item = await response.json()
+      console.log(item)
+    }
+    load()
+    /*fetch('/api/ads')
       .then(response => response.json())
       .then(data => {
-        const foundAd = data.find(ad => ad.Id === id);
-        setAd(foundAd);
-      });
+        const foundAd = data.find(ad => ad.id === id);
+        setAd(foundAd)
+      });*/
   }, [id]);
 
   if (!ad) {
     return <div>Vänta medan annonsen laddas...</div>;
   }
+/*
+useEffect(() => {
+    async function load() {
+      const response = await fetch('/api/ads')
+      console.log(response)
+      let items = await response.json()
+      console.log(items)
+      console.log(items[0].AdActive)
+      items = items.filter(item => item.AdActive === true)
+      console.log(items)
+      setItems(items)
+      setAds(items)
+      console.log(ads)
+      setFilteredAds(items)
+    }
+    load()
+  }, [])
+  */
+
 
   const handleOfferButton = () => {
     navigate(`/ad/${id}/bid`)
@@ -28,28 +55,28 @@ function AdDetailed() {
     kvinna: "Hon",
     annat: "Hen"
   };
-  const pronomen = pronomenLista[ad.Gender.toLowerCase()];
+  const pronomen = pronomenLista[ad.gender.toLowerCase()];
 
   const pets = ["Hund", "Katt", "Fågel", "Häst"];
   let petsList = [];
 
-  for (let Pet of pets) {
-    if (ad[Pet]) {
-      petsList.push(Pet.toLowerCase());
+  for (let pet of pets) {
+    if (ad[pet]) {
+      petsList.push(pet.toLowerCase());
     }
   }
-  let kidsSentence = ad.ChildrenNum === "" ? `${pronomen} har inga barn.` : `${pronomen} har ${ad.ChildrenNum} barn`;
+  let kidsSentence = ad.childrenNum === "" ? `${pronomen} har inga barn.` : `${pronomen} har ${ad.childrenNum} barn`;
 
-  if (ad.ChildrenHome !== "") {
-    if (ad.ChildrenHome.toLowerCase() === "ja") {
+  if (ad.childrenHome !== "") {
+    if (ad.childrenHome.toLowerCase() === "ja") {
       kidsSentence += `, som ${pronomen.toLowerCase()} bor tillsammans med.`;
-    } else if (ad.ChildrenHome.toLowerCase() === "delvis") {
+    } else if (ad.childrenHome.toLowerCase() === "delvis") {
       kidsSentence += `, som ${pronomen.toLowerCase()} delvis bor tillsammans med.`;
-    } else if (ad.ChildrenHome.toLowerCase() === "nej") {
+    } else if (ad.childrenHome.toLowerCase() === "nej") {
       kidsSentence += `, som ${pronomen.toLowerCase()} inte bor tillsammans med.`;
     }
   }
-  const nearby = ["skog", "hav", "kultur", "shopping"].filter(Attraction => ad[Attraction]);
+  const nearby = ["skog", "hav", "kultur", "shopping"].filter(attraction => ad[attraction]);
   let nearbySentence = "";
 
   if (nearby.length > 0) {
@@ -61,14 +88,14 @@ function AdDetailed() {
 
   let petsString = petsList.join(", ");
 
-  let petsSentence = ad.Pets === "" ? `${pronomen} har inga husdjur.` : `${pronomen} har ${petsString}.`;
+  let petsSentence = ad.pets === "" ? `${pronomen} har inga husdjur.` : `${pronomen} har ${petsString}.`;
 
-  if (ad.Other) {
-    petsSentence += ` ${pronomen} har även ${ad.Other.toLowerCase()}.`;
+  if (ad.other) {
+    petsSentence += ` ${pronomen} har även ${ad.other.toLowerCase()}.`;
   }
   let relStatusSentence = "";
 
-  switch (ad.RelStatus.toLowerCase()) {
+  switch (ad.relStatus.toLowerCase()) {
     case "ensamvarg":
       relStatusSentence = `${pronomen} är en övertygad singel, en ensamvarg.`;
       break
@@ -95,22 +122,22 @@ function AdDetailed() {
 
   return (
     <div>
-      <h1>{ad.Headline}</h1>
-      <p>{ad.Presentation}</p>
-      <p>Annonsören är en {ad.Age} år gammal {ad.Gender.toLowerCase()},
-        från {ad.County} län. <br /> {pronomen} bor i {ad.Dwelling.toLowerCase()} i {ad.City.toLowerCase()}. </p>
+      <h1>{ad.headline}</h1>
+      <p>{ad.presentation}</p>
+      <p>Annonsören är en {ad.age} år gammal {ad.gender.toLowerCase()},
+        från {ad.county} län. <br /> {pronomen} bor i {ad.dwelling.toLowerCase()} i {ad.city.toLowerCase()}. </p>
       <p>{nearbySentence}</p>
 
       <p>{petsSentence}</p>
       <p>{relStatusSentence}</p>
       <p>{kidsSentence}</p>
-      {ad.Occupation && ad.Occupation !== "" && (
-        <p>{pronomen} är verksam som {ad.Occupation}</p>
+      {ad.occupation && ad.occupation !== "" && (
+        <p>{pronomen} är verksam som {ad.occupation}</p>
       )}
-      {ad.Hobbies && ad.Hobbies !== "" && (
-        <p>{pronomen} har angivit följande fritidsintressen: {ad.Hobbies}</p>
+      {ad.hobbies && ad.hobbies !== "" && (
+        <p>{pronomen} har angivit följande fritidsintressen: {ad.hobbies}</p>
       )}
-      <p>Denna annons är aktiv till och med {ad.EndDate}.</p>
+      <p>Denna annons är aktiv till och med {ad.endDate}.</p>
       {/*ad.bids ? (<p>Antal bud: {ad.bids.length}</p>) : null*/}
       <button onClick={handleOfferButton}>Lägg ett bud</button>
     </div>

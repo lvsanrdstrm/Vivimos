@@ -7,17 +7,42 @@ namespace Server;
    internal class Ads
     {
 
+        public record GetSingleData(int Id, string Headline);
+    public static IResult GetSingle(int id, State state)
+    {
+        using (var reader = MySqlHelper.ExecuteReader(
+            state.DB,
+            "SELECT id, headline FROM ads WHERE id = @Id",
+            new MySqlParameter("@Id", id)))
+        {
+            if (reader != null && reader.Read())
+            {
+                return TypedResults.Ok(new GetSingleData(
+                    reader.GetInt32("id"),
+                    reader.GetString("headline")
+                ));
+            }
+            else
+            {
+                return TypedResults.NotFound("vi kan inte hitta annonsen du ville se.");
+            }
+        }
+    }
+
     public static string AllAds(State state, HttpContext ctx)
         {
             List<Ad> ads = new List<Ad>();
             string query = "SELECT * FROM ads";
-            MySqlCommand command = new MySqlCommand(query, state.DB);
 
-        using (MySqlDataReader reader = command.ExecuteReader())
-        {
-            while (reader.Read())
+
+        using (MySqlCommand command = new MySqlCommand(query, state.DB))
+        { 
+
+            using (MySqlDataReader reader = command.ExecuteReader())
             {
-                Ad ad = new Ad
+                while (reader.Read())
+                {
+                    Ad ad = new Ad
                 {
                     Id = reader.IsDBNull(reader.GetOrdinal("id")) ? (int?)null : reader.GetInt32("id"),
                     Headline = reader.IsDBNull(reader.GetOrdinal("headline")) ? null : reader.GetString("headline"),
@@ -54,15 +79,16 @@ namespace Server;
                     Children = reader.IsDBNull(reader.GetOrdinal("children")) ? null : reader.GetString("children")
                 };
 
-                ads.Add(ad);
+                    ads.Add(ad);
+
+                }
 
             }
-
-
-            return JsonConvert.SerializeObject(ads);
-            /*  await ctx.Response.WriteAsync(responseJson); // Await the WriteAsync method call
-             return Results.Ok(); // Return an appropriate result */
+            
         }
+        return JsonConvert.SerializeObject(ads);
+        /*  await ctx.Response.WriteAsync(responseJson); // Await the WriteAsync method call
+         return Results.Ok(); // Return an appropriate result */
     }
 
     public static async Task<IResult> AddAd(State state, HttpContext ctx)
@@ -137,6 +163,8 @@ namespace Server;
    
     }
 
+
+
     public record Ad
     {
         public int? Id { get; init; }
@@ -174,5 +202,5 @@ namespace Server;
         public string? Children { get; init; }
     }
 
-}
+   }
 

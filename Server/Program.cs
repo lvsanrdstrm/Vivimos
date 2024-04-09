@@ -28,11 +28,12 @@ try
     builder.Services.AddAuthentication().AddCookie("opa23.molez.vivimos");
     var app = builder.Build();
 
-   app.MapPost("/ads", Ads.AddAd);
+    app.MapPost("/ads", Ads.AddAd);
    //app.MapPost("/api/auth/register", Auth.Register);
-   app.MapPost("/auth/login", Auth.Login);
-   app.MapGet("/ads", Ads.AllAds); // denna ska hämta alla
-   app.Run("http://localhost:3001");
+    app.MapPost("/auth/login", Auth.Login);
+    app.MapGet("/ad/{id}", Ads.GetSingle); //ska hämta den man vill ha
+    app.MapGet("/ads", Ads.AllAds); // denna ska hämta alla
+    app.Run("http://localhost:3001");
 
 }
 catch (MySqlException e)
