@@ -606,15 +606,19 @@ function CreateAd() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const endTimestamp = new Date(form.endDate).getTime();
+    if (!activeUser || !activeUser.Id) {
+      console.error('Active user or user Id is missing.');
+      return;
+    }
+    const EndTimestamp = new Date(form.endDate).getTime();
 
     //console.log('Form data:', form);
-    //console.log(activeUser);
+    //console.log(activeUser.Id);
 
     const formDataWithId = {
       ...form,
-      userId: activeUser.id,
-      endTimestamp,
+      UserId: activeUser.Id,
+      EndTimestamp,
     };
     console.log('With user Id:', formDataWithId);
 

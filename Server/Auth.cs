@@ -1,10 +1,11 @@
 ﻿
+using System.Security.Authentication;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using MySql.Data.MySqlClient;
 using Newtonsoft.Json;
-using static Server.Ads;
 using static Server.Auth;
+
 
 
 namespace Server
@@ -21,34 +22,62 @@ namespace Server
 
             try
             {
-                string query = "SELECT id, role FROM users WHERE username = @Username AND password = @Password";
+                string query = "SELECT id, role, email, username FROM users WHERE username = @Username AND password = @Password";
                 MySqlCommand command = new(query, state.DB);
 
                 command.Parameters.AddWithValue("@Username", loginRequest.Username);
                 command.Parameters.AddWithValue("@Password", loginRequest.Password);
 
-                using MySqlDataReader reader = command.ExecuteReader();
-
-
-                if (reader.Read())
+                using (MySqlDataReader reader = command.ExecuteReader())
                 {
-                    int id = reader.GetInt32("id");
-                    string role = reader.GetString("role");
 
-                    Console.WriteLine(id + ", " + role);
-                    var claims = new List<Claim>
+
+                    if (reader.Read())
+                    {
+
+                        var user = new User
+                        {
+                            Id = reader.GetInt32("id"),
+                            Username = reader.GetString("username"),
+                            Email = reader.GetString("email"),
+                            Role = reader.GetString("role"),
+                            // Add other properties as needed
+                        };
+
+                        Console.WriteLine($"User logged in: {user.Username} (ID: {user.Id}) (role: {user.Role})");
+
+
+                        int id = reader.GetInt32("id");
+                        string role = reader.GetString("role");
+
+
+                        var claims = new List<Claim>
                     {
                         new(ClaimTypes.NameIdentifier, id.ToString()),
                         new(ClaimTypes.Role, role),
                     };
 
-                    var claimsIdentity = new ClaimsIdentity(claims, "opa23.molez.vivimos");
-                    await ctx.SignInAsync("opa23.molez.vivimos", new ClaimsPrincipal(claimsIdentity));
+                        var claimsIdentity = new ClaimsIdentity(claims, "opa23.molez.vivimos");
+                        await ctx.SignInAsync("opa23.molez.vivimos", new ClaimsPrincipal(claimsIdentity));
 
 
-                    return TypedResults.Ok("Signed in");
+
+                        var userData = JsonConvert.SerializeObject(user);
+                        ctx.Response.Headers.Add("Content-Type", "application/json");
+                        return TypedResults.Ok(userData);
+                    }
                 }
                 return TypedResults.Problem("Wrong email or password");
+            }
+            catch (InvalidCredentialException ex)
+            {
+                Console.WriteLine($"Invalid credentials: {ex.Message}");
+                return TypedResults.Problem("Wrong email or password");
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                Console.WriteLine($"Unauthorized access: {ex.Message}");
+                return TypedResults.Problem("Unauthorized access");
             }
             catch (Exception ex)
             {
@@ -81,7 +110,7 @@ namespace Server
                 await command.ExecuteNonQueryAsync();
                 return TypedResults.Ok("User registered successfully");
             }
-
+                      
             catch (MySqlException ex) when (ex.Number == 1062) // Error code for duplicate entry
             {
                 Console.WriteLine($"Email already registered: {ex.Message}");
@@ -99,16 +128,19 @@ namespace Server
         {
             public string? Username { get; init; }
             public string? Password { get; init; }
+            
         }
 
 
 
 
-        public class User
+        public record User
         {
             public string? Username { get; set; }
             public string? Email { get; set; }
             public string? Password { get; set; }
+            public int? Id { get; set; }
+            public string? Role { get; set; }
             // Add any other properties as needed
         }
     }

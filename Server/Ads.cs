@@ -1,6 +1,7 @@
 ﻿using MySql.Data.MySqlClient;
 using Newtonsoft.Json;
 using Org.BouncyCastle.Asn1.Cmp;
+using System.Numerics;
 
 namespace Server;
 
@@ -124,7 +125,7 @@ namespace Server;
                     AdActive = reader.IsDBNull(reader.GetOrdinal("adActive")) ? (bool?)null : reader.GetBoolean("adActive"),
                     EndDate = reader.IsDBNull(reader.GetOrdinal("endDate")) ? (DateTime?)null : reader.GetDateTime("endDate"),
                     UserId = reader.IsDBNull(reader.GetOrdinal("userId")) ? (int?)null : reader.GetInt32("userId"),
-                    EndTimestamp = reader.IsDBNull(reader.GetOrdinal("endTimestamp")) ? (int?)null : reader.GetInt32("endTimestamp"),
+                    EndTimestamp = reader.IsDBNull(reader.GetOrdinal("endTimestamp")) ? (long?)null : reader.GetInt64("endTimestamp"),
                     Children = reader.IsDBNull(reader.GetOrdinal("children")) ? null : reader.GetString("children")
                 };
 
@@ -203,13 +204,23 @@ namespace Server;
             await command.ExecuteNonQueryAsync();
             return TypedResults.Ok("Ad added successfully");
         }
+        catch (MySqlException ex)
+        {
+            Console.WriteLine($"Database error: {ex.Message}");
+            return TypedResults.Problem("An error occurred while accessing the database.");
+        }
+        catch (JsonException ex)
+        {
+            Console.WriteLine($"Invalid JSON format: {ex.Message}");
+            return TypedResults.Problem("Invalid JSON format in the request body.");
+        }
         catch (Exception ex)
         {
-            // Handle any exceptions that occur during database interaction
             Console.WriteLine($"Error adding ad: {ex.Message}");
-            return TypedResults.Problem("An error occurred while adding the ad.");
+            return TypedResults.Problem("An unexpected error occurred while adding the ad.");
         }
-   
+
+
     }
 
 
@@ -247,7 +258,7 @@ namespace Server;
         public bool? AdActive { get; init; }
         public DateTime? EndDate { get; init; }
         public int? UserId { get; init; }
-        public int? EndTimestamp { get; init; }
+        public long? EndTimestamp { get; init; }
         public string? Children { get; init; }
     }
 

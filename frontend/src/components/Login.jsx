@@ -7,7 +7,7 @@ import Modal from './Modal.jsx'
 
 function Login() {
 
-  const { activeUser, setActiveUser } = useContext(GlobalContext)
+  const { activeUser, setActiveUserData } = useContext(GlobalContext);
   const { modalOpen, setModalOpen } = useContext(GlobalContext)
   const { loginOpen, setLoginOpen } = useContext(GlobalContext)
   const { regOpen, setRegOpen } = useContext(GlobalContext)
@@ -28,7 +28,7 @@ function Login() {
       setRegOpen(true)
     }
     else if (e.target.value === 'logout') {
-      setActiveUser({})
+      setActiveUserData({})
       setModalOpen(false)
     }
 
@@ -133,9 +133,14 @@ function Login() {
         body: JSON.stringify(formData)
       });
 
+
       if (response.ok) {
-        const userData = await response.json();
-        setActiveUser({ ...userData, loggedIn: true });
+        var userData = await response.json();
+        userData = JSON.parse(userData);
+        //console.log(typeof userData);
+        setActiveUserData({ ...userData, loggedIn: true });
+        console.log('Signed in.')
+
       } else {
         // Handle authentication error
       }
@@ -218,6 +223,7 @@ function Login() {
       if (response.ok) {
         const data = await response.json();
         console.log('New user added:', data);
+        setActiveUserData({ ...userData, loggedIn: true });
       } else {
         console.error('Error adding new user:', response.statusText);
       }
