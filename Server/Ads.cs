@@ -1,6 +1,7 @@
 ﻿using MySql.Data.MySqlClient;
 using Newtonsoft.Json;
 using Org.BouncyCastle.Asn1.Cmp;
+using System.Numerics;
 
 namespace Server;
 
@@ -12,54 +13,55 @@ namespace Server;
             string query = "SELECT * FROM ads";
             MySqlCommand command = new MySqlCommand(query, state.DB);
 
-            using (MySqlDataReader reader = command.ExecuteReader())
+        using (MySqlDataReader reader = command.ExecuteReader())
+        {
+            while (reader.Read())
             {
-                while (reader.Read())
-                {
                 Ad ad = new Ad
                 {
-                         Id = reader.GetInt32("id"),
-                         Headline = reader.GetString("headline"),
-                         County = reader.GetString("county"),
-                         Dwelling = reader.GetString("dwelling"),
-                         DwellingOther = reader.GetString("dwellingOther"),
-                         Occupation = reader.GetString("occupation"),
-                         RelStatus = reader.GetString("relStatus"),
-                         PartnerInfo = reader.GetString("partnerInfo"),
-                         ChildrenNum = reader.GetInt32("childrenNum"),
-                         ChildrenHome = reader.GetString("childrenHome"),
-                         Pets = reader.GetString("pets"),
-                         Dog = reader.GetString("dog"),
-                         Cat = reader.GetString("cat"),
-                         Bird = reader.GetString("bird"),
-                         Horse = reader.GetString("horse"),
-                         Other = reader.GetString("other"),
-                         City = reader.GetString("city"),
-                         CityAlternative = reader.GetString("cityAlternative"),
-                         Forest = reader.GetString("forest"),
-                         Sea = reader.GetString("sea"),
-                         Culture = reader.GetString("culture"),
-                         Shopping = reader.GetString("shopping"),
-                         Car = reader.GetBoolean("car"),
-                         CarInfo = reader.GetString("carInfo"),
-                         Hobbies = reader.GetString("hobbies"),
-                         Presentation = reader.GetString("presentation"),
-                         Age = reader.GetInt32("age"),
-                         Gender = reader.GetString("gender"),
-                         AdActive = reader.GetBoolean("adActive"),
-                         EndDate = reader.GetDateTime("endDate"),
-                         UserId = reader.GetInt32("userId"),
-                         EndTimestamp = reader.GetInt32("endTimestamp"),
-                         Children = reader.GetString("children")
+                    Id = reader.IsDBNull(reader.GetOrdinal("id")) ? (int?)null : reader.GetInt32("id"),
+                    Headline = reader.IsDBNull(reader.GetOrdinal("headline")) ? null : reader.GetString("headline"),
+                    County = reader.IsDBNull(reader.GetOrdinal("county")) ? null : reader.GetString("county"),
+                    Dwelling = reader.IsDBNull(reader.GetOrdinal("dwelling")) ? null : reader.GetString("dwelling"),
+                    DwellingOther = reader.IsDBNull(reader.GetOrdinal("dwellingOther")) ? null : reader.GetString("dwellingOther"),
+                    Occupation = reader.IsDBNull(reader.GetOrdinal("occupation")) ? null : reader.GetString("occupation"),
+                    RelStatus = reader.IsDBNull(reader.GetOrdinal("relStatus")) ? null : reader.GetString("relStatus"),
+                    PartnerInfo = reader.IsDBNull(reader.GetOrdinal("partnerInfo")) ? null : reader.GetString("partnerInfo"),
+                    ChildrenNum = reader.IsDBNull(reader.GetOrdinal("childrenNum")) ? (int?)null : reader.GetInt32("childrenNum"),
+                    ChildrenHome = reader.IsDBNull(reader.GetOrdinal("childrenHome")) ? null : reader.GetString("childrenHome"),
+                    Pets = reader.IsDBNull(reader.GetOrdinal("pets")) ? null : reader.GetString("pets"),
+                    Dog = reader.IsDBNull(reader.GetOrdinal("dog")) ? null : reader.GetString("dog"),
+                    Cat = reader.IsDBNull(reader.GetOrdinal("cat")) ? null : reader.GetString("cat"),
+                    Bird = reader.IsDBNull(reader.GetOrdinal("bird")) ? null : reader.GetString("bird"),
+                    Horse = reader.IsDBNull(reader.GetOrdinal("horse")) ? null : reader.GetString("horse"),
+                    Other = reader.IsDBNull(reader.GetOrdinal("other")) ? null : reader.GetString("other"),
+                    City = reader.IsDBNull(reader.GetOrdinal("city")) ? null : reader.GetString("city"),
+                    CityAlternative = reader.IsDBNull(reader.GetOrdinal("cityAlternative")) ? null : reader.GetString("cityAlternative"),
+                    Forest = reader.IsDBNull(reader.GetOrdinal("forest")) ? null : reader.GetString("forest"),
+                    Sea = reader.IsDBNull(reader.GetOrdinal("sea")) ? null : reader.GetString("sea"),
+                    Culture = reader.IsDBNull(reader.GetOrdinal("culture")) ? null : reader.GetString("culture"),
+                    Shopping = reader.IsDBNull(reader.GetOrdinal("shopping")) ? null : reader.GetString("shopping"),
+                    Car = reader.IsDBNull(reader.GetOrdinal("car")) ? (bool?)null : reader.GetBoolean("car"),
+                    CarInfo = reader.IsDBNull(reader.GetOrdinal("carInfo")) ? null : reader.GetString("carInfo"),
+                    Hobbies = reader.IsDBNull(reader.GetOrdinal("hobbies")) ? null : reader.GetString("hobbies"),
+                    Presentation = reader.IsDBNull(reader.GetOrdinal("presentation")) ? null : reader.GetString("presentation"),
+                    Age = reader.IsDBNull(reader.GetOrdinal("age")) ? (int?)null : reader.GetInt32("age"),
+                    Gender = reader.IsDBNull(reader.GetOrdinal("gender")) ? null : reader.GetString("gender"),
+                    AdActive = reader.IsDBNull(reader.GetOrdinal("adActive")) ? (bool?)null : reader.GetBoolean("adActive"),
+                    EndDate = reader.IsDBNull(reader.GetOrdinal("endDate")) ? (DateTime?)null : reader.GetDateTime("endDate"),
+                    UserId = reader.IsDBNull(reader.GetOrdinal("userId")) ? (int?)null : reader.GetInt32("userId"),
+                    EndTimestamp = reader.IsDBNull(reader.GetOrdinal("endTimestamp")) ? (long?)null : reader.GetInt64("endTimestamp"),
+                    Children = reader.IsDBNull(reader.GetOrdinal("children")) ? null : reader.GetString("children")
                 };
 
                 ads.Add(ad);
 
             }
+
+
+
+            return JsonConvert.SerializeObject(ads);
         }
-
-
-            return  JsonConvert.SerializeObject(ads);
            
     }
 
@@ -126,13 +128,23 @@ namespace Server;
             await command.ExecuteNonQueryAsync();
             return TypedResults.Ok("Ad added successfully");
         }
+        catch (MySqlException ex)
+        {
+            Console.WriteLine($"Database error: {ex.Message}");
+            return TypedResults.Problem("An error occurred while accessing the database.");
+        }
+        catch (JsonException ex)
+        {
+            Console.WriteLine($"Invalid JSON format: {ex.Message}");
+            return TypedResults.Problem("Invalid JSON format in the request body.");
+        }
         catch (Exception ex)
         {
-            // Handle any exceptions that occur during database interaction
             Console.WriteLine($"Error adding ad: {ex.Message}");
-            return TypedResults.Problem("An error occurred while adding the ad.");
+            return TypedResults.Problem("An unexpected error occurred while adding the ad.");
         }
-   
+
+
     }
 
     public record Ad
@@ -168,7 +180,7 @@ namespace Server;
         public bool? AdActive { get; init; }
         public DateTime? EndDate { get; init; }
         public int? UserId { get; init; }
-        public int? EndTimestamp { get; init; }
+        public long? EndTimestamp { get; init; }
         public string? Children { get; init; }
     }
 
