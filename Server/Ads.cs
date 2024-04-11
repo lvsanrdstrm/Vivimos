@@ -7,7 +7,7 @@ namespace Server;
    internal class Ads
     {
 
-        public record GetSingleData(int Id, string Headline);
+    public record GetSingleData(int Id, string Headline);
     public static IResult GetSingle(int id, State state)
     {
         using (var reader = MySqlHelper.ExecuteReader(
