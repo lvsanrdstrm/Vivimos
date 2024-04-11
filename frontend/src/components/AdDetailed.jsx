@@ -8,45 +8,19 @@ function AdDetailed() {
 
 
   useEffect(() => {
-
-    async function load(){
-      const response = await fetch(`/api/ad/${id}`)
-      console.log(response)
-      let item = await response.json()
-      console.log(item)
+    async function load() {
+      const response = await fetch(`/api/ad/${id}`);
+      const data = await response.json();
+      if (data.length > 0) {
+        setAd(data[0]); // Assuming you only want the first ad in the array
+      }
     }
-    load()
-    /*fetch('/api/ads')
-      .then(response => response.json())
-      .then(data => {
-        const foundAd = data.find(ad => ad.id === id);
-        setAd(foundAd)
-      });*/
+    load();
   }, [id]);
 
   if (!ad) {
-    return <div>Vänta medan annonsen laddas...</div>;
+    return <div>det ser ut som att annonsen inte finns. hmm...</div>;
   }
-/*
-useEffect(() => {
-    async function load() {
-      const response = await fetch('/api/ads')
-      console.log(response)
-      let items = await response.json()
-      console.log(items)
-      console.log(items[0].AdActive)
-      items = items.filter(item => item.AdActive === true)
-      console.log(items)
-      setItems(items)
-      setAds(items)
-      console.log(ads)
-      setFilteredAds(items)
-    }
-    load()
-  }, [])
-  */
-
-
   const handleOfferButton = () => {
     navigate(`/ad/${id}/bid`)
   }

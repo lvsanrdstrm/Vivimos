@@ -7,30 +7,79 @@ namespace Server;
    internal class Ads
     {
 
-    public record GetSingleData(int Id, string Headline);
-    public static IResult GetSingle(int id, State state)
+    public static string GetSingle(State state, HttpContext ctx)
     {
-        using (var reader = MySqlHelper.ExecuteReader(
-            state.DB,
-            "SELECT id, headline FROM ads WHERE id = @Id",
-            new MySqlParameter("@Id", id)))
+        var id = ctx.Request.RouteValues["id"];
+
+        // Check if id is not null and is of the correct type
+        if (id != null && int.TryParse(id.ToString(), out int adId))
         {
-            if (reader != null && reader.Read())
+            List<Ad> ads = new List<Ad>();
+            string query = "SELECT * FROM ads WHERE id = @Id";
+
+            using (MySqlCommand command = new MySqlCommand(query, state.DB))
             {
-                return TypedResults.Ok(new GetSingleData(
-                    reader.GetInt32("id"),
-                    reader.GetString("headline")
-                ));
+                command.Parameters.AddWithValue("@Id", adId);
+
+                using (MySqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        Ad ad = new Ad
+                        {
+                            Id = reader.IsDBNull(reader.GetOrdinal("id")) ? (int?)null : reader.GetInt32("id"),
+                            Headline = reader.IsDBNull(reader.GetOrdinal("headline")) ? null : reader.GetString("headline"),
+                            County = reader.IsDBNull(reader.GetOrdinal("county")) ? null : reader.GetString("county"),
+                            Dwelling = reader.IsDBNull(reader.GetOrdinal("dwelling")) ? null : reader.GetString("dwelling"),
+                            DwellingOther = reader.IsDBNull(reader.GetOrdinal("dwellingOther")) ? null : reader.GetString("dwellingOther"),
+                            Occupation = reader.IsDBNull(reader.GetOrdinal("occupation")) ? null : reader.GetString("occupation"),
+                            RelStatus = reader.IsDBNull(reader.GetOrdinal("relStatus")) ? null : reader.GetString("relStatus"),
+                            PartnerInfo = reader.IsDBNull(reader.GetOrdinal("partnerInfo")) ? null : reader.GetString("partnerInfo"),
+                            ChildrenNum = reader.IsDBNull(reader.GetOrdinal("childrenNum")) ? (int?)null : reader.GetInt32("childrenNum"),
+                            ChildrenHome = reader.IsDBNull(reader.GetOrdinal("childrenHome")) ? null : reader.GetString("childrenHome"),
+                            Pets = reader.IsDBNull(reader.GetOrdinal("pets")) ? null : reader.GetString("pets"),
+                            Dog = reader.IsDBNull(reader.GetOrdinal("dog")) ? null : reader.GetString("dog"),
+                            Cat = reader.IsDBNull(reader.GetOrdinal("cat")) ? null : reader.GetString("cat"),
+                            Bird = reader.IsDBNull(reader.GetOrdinal("bird")) ? null : reader.GetString("bird"),
+                            Horse = reader.IsDBNull(reader.GetOrdinal("horse")) ? null : reader.GetString("horse"),
+                            Other = reader.IsDBNull(reader.GetOrdinal("other")) ? null : reader.GetString("other"),
+                            City = reader.IsDBNull(reader.GetOrdinal("city")) ? null : reader.GetString("city"),
+                            CityAlternative = reader.IsDBNull(reader.GetOrdinal("cityAlternative")) ? null : reader.GetString("cityAlternative"),
+                            Forest = reader.IsDBNull(reader.GetOrdinal("forest")) ? null : reader.GetString("forest"),
+                            Sea = reader.IsDBNull(reader.GetOrdinal("sea")) ? null : reader.GetString("sea"),
+                            Culture = reader.IsDBNull(reader.GetOrdinal("culture")) ? null : reader.GetString("culture"),
+                            Shopping = reader.IsDBNull(reader.GetOrdinal("shopping")) ? null : reader.GetString("shopping"),
+                            Car = reader.IsDBNull(reader.GetOrdinal("car")) ? (bool?)null : reader.GetBoolean("car"),
+                            CarInfo = reader.IsDBNull(reader.GetOrdinal("carInfo")) ? null : reader.GetString("carInfo"),
+                            Hobbies = reader.IsDBNull(reader.GetOrdinal("hobbies")) ? null : reader.GetString("hobbies"),
+                            Presentation = reader.IsDBNull(reader.GetOrdinal("presentation")) ? null : reader.GetString("presentation"),
+                            Age = reader.IsDBNull(reader.GetOrdinal("age")) ? (int?)null : reader.GetInt32("age"),
+                            Gender = reader.IsDBNull(reader.GetOrdinal("gender")) ? null : reader.GetString("gender"),
+                            AdActive = reader.IsDBNull(reader.GetOrdinal("adActive")) ? (bool?)null : reader.GetBoolean("adActive"),
+                            EndDate = reader.IsDBNull(reader.GetOrdinal("endDate")) ? (DateTime?)null : reader.GetDateTime("endDate"),
+                            UserId = reader.IsDBNull(reader.GetOrdinal("userId")) ? (int?)null : reader.GetInt32("userId"),
+                            EndTimestamp = reader.IsDBNull(reader.GetOrdinal("endTimestamp")) ? (int?)null : reader.GetInt32("endTimestamp"),
+                            Children = reader.IsDBNull(reader.GetOrdinal("children")) ? null : reader.GetString("children")
+                        };
+
+                        ads.Add(ad);
+                    }
+                }
+
+                return JsonConvert.SerializeObject(ads);
             }
-            else
-            {
-                return TypedResults.NotFound("vi kan inte hitta annonsen du ville se.");
-            }
+        }
+        else
+        {
+            // Handle the case where id is not provided or is invalid
+            // For example, return an error message
+            return "Invalid or missing id parameter";
         }
     }
 
+
     public static string AllAds(State state, HttpContext ctx)
-        {
+    {
             List<Ad> ads = new List<Ad>();
             string query = "SELECT * FROM ads";
 
