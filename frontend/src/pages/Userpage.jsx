@@ -20,7 +20,14 @@ function Userpage() {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await fetch(`/api/users/${id}`)
+        const response = await fetch(`/api/users/`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(id)
+        })
+
         console.log(response)
         if (!response.ok) {
           console.error('Error fetching user data:', response.statusText)
@@ -56,7 +63,7 @@ function Userpage() {
 
 const fetchAd = async () => {
   console.log('fetching ad')
-  const id = userData.id
+  const id = 1
   console.log(id)
     try {
       const response = await fetch(`/api/ads/?userId=${id}`)
@@ -104,7 +111,7 @@ if (!userData) {
      ) : (
      
    
-      <h2>Hej</h2>
+      <h2>Hej {activeUser[0].username}</h2>
     
     
   )}

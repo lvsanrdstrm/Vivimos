@@ -137,6 +137,83 @@ namespace Server;
    
     }
 
+    public static async Task<IResult> AdFromId(State state, HttpContext ctx) {
+        var request = ctx.Request;
+        var requestBody = await new StreamReader(request.Body).ReadToEndAsync();
+        var loginRequest = JsonConvert.DeserializeObject<AdFromIdFormat>(requestBody);
+
+        try
+            {
+                string query = "SELECT * FROM ads WHERE userId = @UserId";
+                MySqlCommand command = new(query, state.DB);
+
+                command.Parameters.AddWithValue("@UserId", loginRequest.UserId);
+                Console.WriteLine($"Received request body: {requestBody}");
+
+                using (MySqlDataReader reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                        {
+                            Ad ad = new Ad
+                                {
+                    Id = reader.IsDBNull(reader.GetOrdinal("id")) ? (int?)null : reader.GetInt32("id"),
+                    Headline = reader.IsDBNull(reader.GetOrdinal("headline")) ? null : reader.GetString("headline"),
+                    County = reader.IsDBNull(reader.GetOrdinal("county")) ? null : reader.GetString("county"),
+                    Dwelling = reader.IsDBNull(reader.GetOrdinal("dwelling")) ? null : reader.GetString("dwelling"),
+                    DwellingOther = reader.IsDBNull(reader.GetOrdinal("dwellingOther")) ? null : reader.GetString("dwellingOther"),
+                    Occupation = reader.IsDBNull(reader.GetOrdinal("occupation")) ? null : reader.GetString("occupation"),
+                    RelStatus = reader.IsDBNull(reader.GetOrdinal("relStatus")) ? null : reader.GetString("relStatus"),
+                    PartnerInfo = reader.IsDBNull(reader.GetOrdinal("partnerInfo")) ? null : reader.GetString("partnerInfo"),
+                    ChildrenNum = reader.IsDBNull(reader.GetOrdinal("childrenNum")) ? (int?)null : reader.GetInt32("childrenNum"),
+                    ChildrenHome = reader.IsDBNull(reader.GetOrdinal("childrenHome")) ? null : reader.GetString("childrenHome"),
+                    Pets = reader.IsDBNull(reader.GetOrdinal("pets")) ? null : reader.GetString("pets"),
+                    Dog = reader.IsDBNull(reader.GetOrdinal("dog")) ? null : reader.GetString("dog"),
+                    Cat = reader.IsDBNull(reader.GetOrdinal("cat")) ? null : reader.GetString("cat"),
+                    Bird = reader.IsDBNull(reader.GetOrdinal("bird")) ? null : reader.GetString("bird"),
+                    Horse = reader.IsDBNull(reader.GetOrdinal("horse")) ? null : reader.GetString("horse"),
+                    Other = reader.IsDBNull(reader.GetOrdinal("other")) ? null : reader.GetString("other"),
+                    City = reader.IsDBNull(reader.GetOrdinal("city")) ? null : reader.GetString("city"),
+                    CityAlternative = reader.IsDBNull(reader.GetOrdinal("cityAlternative")) ? null : reader.GetString("cityAlternative"),
+                    Forest = reader.IsDBNull(reader.GetOrdinal("forest")) ? null : reader.GetString("forest"),
+                    Sea = reader.IsDBNull(reader.GetOrdinal("sea")) ? null : reader.GetString("sea"),
+                    Culture = reader.IsDBNull(reader.GetOrdinal("culture")) ? null : reader.GetString("culture"),
+                    Shopping = reader.IsDBNull(reader.GetOrdinal("shopping")) ? null : reader.GetString("shopping"),
+                    Car = reader.IsDBNull(reader.GetOrdinal("car")) ? (bool?)null : reader.GetBoolean("car"),
+                    CarInfo = reader.IsDBNull(reader.GetOrdinal("carInfo")) ? null : reader.GetString("carInfo"),
+                    Hobbies = reader.IsDBNull(reader.GetOrdinal("hobbies")) ? null : reader.GetString("hobbies"),
+                    Presentation = reader.IsDBNull(reader.GetOrdinal("presentation")) ? null : reader.GetString("presentation"),
+                    Age = reader.IsDBNull(reader.GetOrdinal("age")) ? (int?)null : reader.GetInt32("age"),
+                    Gender = reader.IsDBNull(reader.GetOrdinal("gender")) ? null : reader.GetString("gender"),
+                    AdActive = reader.IsDBNull(reader.GetOrdinal("adActive")) ? (bool?)null : reader.GetBoolean("adActive"),
+                    EndDate = reader.IsDBNull(reader.GetOrdinal("endDate")) ? (DateTime?)null : reader.GetDateTime("endDate"),
+                    UserId = reader.IsDBNull(reader.GetOrdinal("userId")) ? (int?)null : reader.GetInt32("userId"),
+                    EndTimestamp = reader.IsDBNull(reader.GetOrdinal("endTimestamp")) ? (int?)null : reader.GetInt32("endTimestamp"),
+                    Children = reader.IsDBNull(reader.GetOrdinal("children")) ? null : reader.GetString("children")
+                    };
+            string adJson = JsonConvert.SerializeObject(ad);
+            return TypedResults.Ok(adJson);
+        }
+        else
+            {
+                // Handle case where no ad is found for the specified userId
+                return TypedResults.NotFound("Ad not found for the specified user.");
+            }
+        };
+
+    }
+    catch (Exception ex)
+        {
+            Console.WriteLine($"Error adding ad: {ex.Message}");
+            return TypedResults.Problem("An error occurred while adding the ad.");
+        }
+        return TypedResults.Problem("Unexpected error occurred.");
+    }
+
+    public class AdFromIdFormat 
+    {
+        public int UserId  { get; set; }
+    }
+
     public record Ad
     {
         public int? Id { get; init; }

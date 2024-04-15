@@ -12,7 +12,7 @@ using MySql.Data.MySqlClient;
 
 MySqlConnection? db = null;
 
-string connectionString = "server=localhost;uid=root;pwd=mypassword;database=vivimos;port=3306";
+string connectionString = "server=localhost;uid=root;pwd=123;database=vivimos;port=3306";
 var builder = WebApplication.CreateBuilder(args);
 
 
@@ -32,6 +32,7 @@ try
    //app.MapPost("/api/auth/register", Auth.Register);
    app.MapPost("/auth/login", Auth.Login);
    app.MapGet("/ads", Ads.AllAds); // denna ska hämta alla
+  // app.MapPost("/users", Users.Single);
    app.Run("http://localhost:3001");
 
 }
