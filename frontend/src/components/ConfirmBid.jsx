@@ -2,11 +2,13 @@ import { useEffect, useState, useContext } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { GlobalContext } from '../GlobalContext'
 
+//"/bids/${id}/bid"
+
 function ConfirmBid() {
 
   const { id } = useParams()
   const [auctionData, setAuctionData] = useState(null)
-  const { activeUser, setActiveUser} = useContext(GlobalContext)
+  const { activeUser, setActiveUser } = useContext(GlobalContext)
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -38,12 +40,12 @@ function ConfirmBid() {
       else {
         alert('Du har redan lagt ett bud på den här auktionen.')
       }
-      
+
     }
     else {
       alert('Du måste logga in för att kunna lägga ett bud.')
     }
-   
+
   }
 
   return (
@@ -69,9 +71,9 @@ function saveBid(activeUser, auctionData) {
       bids: [...existingBids, activeUser.id], // assuming existingBids is an array containing previous bids
     }),
   };
-  
+
   fetch(`/api/ads/${auctionData.id}`, requestOptions)
-    .then(response => response.json())    
+    .then(response => response.json())
     .then(data => console.log('Bid added:', data))
     .catch(error => console.error('Error adding bid:', error));
 }

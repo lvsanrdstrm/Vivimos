@@ -482,3 +482,6 @@ $RECYCLE.BIN/
 
 # Vim temporary swap files
 *.swp
+/Server/Bids.cs
+/Server/Auctions.cs
+/Server/Bids.cs
