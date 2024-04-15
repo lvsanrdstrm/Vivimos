@@ -123,9 +123,22 @@ namespace Server;
             command.Parameters.AddWithValue("@EndTimestamp", adData.EndTimestamp);
             command.Parameters.AddWithValue("@Children", adData.Children);
 
-        
-            // Execute the SQL command to insert the ad into the database
+
             await command.ExecuteNonQueryAsync();
+
+            // Retrieve the last inserted ID using LAST_INSERT_ID()
+            var adIdQuery = "SELECT LAST_INSERT_ID();";
+            var adIdCommand = new MySqlCommand(adIdQuery, state.DB);
+            var adId = await adIdCommand.ExecuteScalarAsync();
+
+            // Update the users table with the adId
+            string userQuery = "UPDATE users SET ad = @AdId WHERE id = @UserId";
+
+            MySqlCommand userCommand = new MySqlCommand(userQuery, state.DB);
+
+            userCommand.Parameters.AddWithValue("@AdId", adId);
+            userCommand.Parameters.AddWithValue("@UserId", adData.UserId);
+            await userCommand.ExecuteNonQueryAsync();
             return TypedResults.Ok("Ad added successfully");
         }
         catch (MySqlException ex)
