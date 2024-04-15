@@ -48,7 +48,7 @@ function AdList() {
         <div className='ad-info'>
 
           <h3 className="ad-title"><Link to={`/ad/${Id}`}>{Headline}</Link></h3>
-         
+
           <p>Denna annons är aktiv till och med {EndDate}.</p>
 
 
