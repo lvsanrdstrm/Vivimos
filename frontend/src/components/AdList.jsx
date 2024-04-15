@@ -3,6 +3,7 @@ import { GlobalContext } from "../GlobalContext"
 import { Link, useNavigate } from "react-router-dom"
 import bidpaddle from '../assets/images/bidpaddle.png'
 import '../assets/styles/itemCard.css'
+import { handleBidClick } from "./ConfirmBid"
 
 function AdList() {
 
@@ -11,6 +12,7 @@ function AdList() {
   const { filteredAds, setFilteredAds } = useContext(GlobalContext)
   const navigate = useNavigate()
   const [items, setItems] = useState([])
+
   useEffect(() => {
     async function load() {
       const response = await fetch('/api/ads')
@@ -53,13 +55,22 @@ function AdList() {
 
 
         </div>
-        {/*<div className='ad-right'>
-          {bids && bids.includes(activeUser.id) ? (<img className='bidPaddle' src={bidpaddle}></img>) : null}
-          {bids ? (<p className="antalBud">Antal bud: {bids.length}</p>) : null}
-          <div class="button-container">
-            <button onClick={handleOfferButton}>Lägg ett bud</button>
+        {<div className='ad-right'>
+          {activeUser.loggedIn && activeUser.ad && activeUser.ad === ad.Id ? (
+            <img className='bidPaddle' src={bidpaddle} alt="Bid paddle"></img>
+          ) : null}
+          /*{ad.bids ? (
+            <p className="antalBud">Antal bud: {ad.bids.length}</p>
+          ) : null}*/
+          <div className="button-container">
+            {activeUser.loggedIn ? (
+              <button onClick={() => handleOfferButton(ad.Id)}>Lägg ett bud</button>
+            ) : (
+              <button onClick={() => alert("Du måste logga in för att kunna lägga ett bud.")}>Lägg ett bud</button>
+            )}
           </div>
-    </div>*/}
+        </div>}
+
       </div>
     )
   }

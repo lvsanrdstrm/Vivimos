@@ -33,6 +33,7 @@ try
     app.MapPost("/auth/login", Auth.Login);
     app.MapGet("/ad/{id}", Ads.GetSingle); //ska hämta den man vill ha
     app.MapGet("/ads", Ads.AllAds); // denna ska hämta alla
+    app.MapPost("/ad/${id}/bid", Auctions.PlaceBid);
     app.Run("http://localhost:3001");
 
 }
