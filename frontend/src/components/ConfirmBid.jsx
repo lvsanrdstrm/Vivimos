@@ -16,11 +16,24 @@ export const handleBidClick = async (id, navigate, activeUser) => {
         }),
       };
 
-      await fetch(`/ad/${id}/bid`, requestOptions); // Updated API endpoint
+      await fetch(`/api/ad/${id}/bid`, requestOptions);
+
+
+      if (requestOptions.ok) {
+        var userData = await requestOptions.json();
+        userData = JSON.parse(userData);
+        console.log(userData)
+
+      } else {
+        console.error('Error authenticating user:', error);
+      }
+
       alert('Ditt bud har sparats.');
       navigate('/');
+
     } catch (error) {
       console.error('Error adding bid:', error);
+      console.log(userData)
       alert('Ett fel inträffade vid sparandet av ditt bud.');
     }
   } else {

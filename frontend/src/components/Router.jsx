@@ -19,7 +19,7 @@ function Router() {
         {/*<Route path="/" element={<Header />} />*/}
         <Route path="/createAd" element={<Ad />} />
         <Route path="/ad/:id" element={<AdDetailed />} />
-        <Route path='/ad/:id/bid' element={<ConfirmBid />} />
+        <Route path="/ad/:id/bid" element={<ConfirmBid />} />
         <Route path="/" element={<Home />} /> {/*kan va självstängande element om det inte händer något mellan taggarna*/}
         <Route path="/test" element={<Test />} />
         <Route path="/users/:id" element={<Userpage />} />

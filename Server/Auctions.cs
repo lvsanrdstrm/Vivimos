@@ -11,6 +11,8 @@ namespace Server
         {
             var requestBody = await new StreamReader(ctx.Request.Body).ReadToEndAsync();
             var auction = JsonConvert.DeserializeObject<Auction>(requestBody);
+            Console.WriteLine("hej");
+            var id = ctx.Request.RouteValues["id"];
 
             try
             {
