@@ -1,5 +1,7 @@
 ﻿using MySql.Data.MySqlClient;
 using Newtonsoft.Json;
+using System.Diagnostics.CodeAnalysis;
+using System.Security.Claims;
 using static Server.Auth;
 
 namespace Server
@@ -7,25 +9,19 @@ namespace Server
     public class Auctions
     {
 
-        public static async Task<IResult> PlaceBid(State state, HttpContext ctx)
+        public static  IResult PlaceBid(int id, State state, ClaimsPrincipal User)
         {
-            var requestBody = await new StreamReader(ctx.Request.Body).ReadToEndAsync();
-            var auction = JsonConvert.DeserializeObject<Auction>(requestBody);
-            Console.WriteLine("hej");
-            var id = ctx.Request.RouteValues["id"];
+    
 
             try
             {
-                await using var transaction = await state.DB.BeginTransactionAsync();
 
-                string query = "INSERT INTO bids (ad, bid) VALUES (@Ad, @Bid)";
-                MySqlCommand command = new MySqlCommand(query, state.DB);
-                command.Parameters.AddWithValue("@Ad", auction.Ad);
-                command.Parameters.AddWithValue("@Bid", auction.Bid);
+                string query = "INSERT INTO bids (ad, bid) VALUES (@Ad, (SELECT ad FROM users where id = @UserId))";
+                
+                string user = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                
+                MySqlHelper.ExecuteNonQuery(state.DB, query, [new("@Ad", id),new("@UserId",int.Parse(user))]);
 
-                await command.ExecuteNonQueryAsync();
-
-                await transaction.CommitAsync();
 
                 return TypedResults.Ok("Bid registered successfully");
             }

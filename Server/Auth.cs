@@ -23,12 +23,14 @@ namespace Server
             try
             {
                 string query = "SELECT id, role, email, username FROM users WHERE username = @Username AND password = @Password";
-                MySqlCommand command = new(query, state.DB);
 
-                command.Parameters.AddWithValue("@Username", loginRequest.Username);
-                command.Parameters.AddWithValue("@Password", loginRequest.Password);
 
-                using (MySqlDataReader reader = command.ExecuteReader())
+                using (var reader = MySqlHelper.ExecuteReader(state.DB, query,
+        [
+                new("@Username", loginRequest.Username),
+                new("@Password", loginRequest.Password)
+        ]
+                    ))
                 {
 
 
@@ -99,18 +101,18 @@ namespace Server
                 string query = "INSERT INTO users (username, email, password, role) VALUES (@Username, @Email, @Password, 'user')";
 
                 // Create a MySqlCommand object with the SQL query and database connection
-                MySqlCommand command = new MySqlCommand(query, state.DB);
 
                 // Add parameters to the command to prevent SQL injection
-                command.Parameters.AddWithValue("@Username", user.Username);
-                command.Parameters.AddWithValue("@Email", user.Email);
-                command.Parameters.AddWithValue("@Password", user.Password);
 
                 // Execute the SQL command to insert the user into the database
-                await command.ExecuteNonQueryAsync();
+                MySqlHelper.ExecuteNonQueryAsync(state.DB, query, [
+               new("@Username", user.Username),
+                new("@Email", user.Email),
+                new("@Password", user.Password)
+        ]);
                 return TypedResults.Ok("User registered successfully");
             }
-                      
+
             catch (MySqlException ex) when (ex.Number == 1062) // Error code for duplicate entry
             {
                 Console.WriteLine($"Email already registered: {ex.Message}");
@@ -128,7 +130,7 @@ namespace Server
         {
             public string? Username { get; init; }
             public string? Password { get; init; }
-            
+
         }
 
 

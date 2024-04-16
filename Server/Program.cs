@@ -10,7 +10,6 @@ using Server;
 using MySql.Data.MySqlClient;
 
 
-MySqlConnection? db = null;
 
 string connectionString = "server=localhost;uid=root;pwd=mypassword;database=vivimos;port=3306";
 var builder = WebApplication.CreateBuilder(args);
@@ -18,12 +17,13 @@ var builder = WebApplication.CreateBuilder(args);
 
 try
 {
-    db = new MySqlConnection(connectionString);
-    db.Open();
-    builder.Services.AddSingleton(new State(db));
+
+    builder.Services.AddSingleton(new State(connectionString));
     builder.Services.AddAuthorization(options =>
     {
         options.AddPolicy("admin_route", policy => policy.RequireRole("admin"));
+        options.AddPolicy("user", policy => policy.RequireRole("user"));
+
     });
     builder.Services.AddAuthentication().AddCookie("opa23.molez.vivimos");
     var app = builder.Build();
@@ -33,15 +33,11 @@ try
     app.MapPost("/auth/login", Auth.Login);
     app.MapGet("/ad/{id}", Ads.GetSingle); //ska hämta den man vill ha
     app.MapGet("/ads", Ads.AllAds); // denna ska hämta alla
-    app.MapPost("/ad/{id}/bid", Auctions.PlaceBid);
+    app.MapPost("/bids/{id}", Auctions.PlaceBid).RequireAuthorization("user");
     app.Run("http://localhost:3001");
 
 }
 catch (MySqlException e)
 {
     Console.WriteLine(e);
-}
-finally
-{
-    db?.Close();
 }

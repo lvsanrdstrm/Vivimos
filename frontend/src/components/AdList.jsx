@@ -3,7 +3,6 @@ import { GlobalContext } from "../GlobalContext"
 import { Link, useNavigate } from "react-router-dom"
 import bidpaddle from '../assets/images/bidpaddle.png'
 import '../assets/styles/itemCard.css'
-import { handleBidClick } from "./ConfirmBid"
 
 function AdList() {
 

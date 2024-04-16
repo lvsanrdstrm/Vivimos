@@ -2,4 +2,4 @@
 
 namespace Server;
 
-public record State(MySqlConnection DB);
+public record State(string DB);
