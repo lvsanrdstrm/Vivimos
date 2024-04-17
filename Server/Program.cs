@@ -32,6 +32,7 @@ try
    app.MapPost("/auth/register", Auth.Register);
     app.MapPost("/auth/login", Auth.Login);
     app.MapGet("/ads", Ads.AllAds); // denna ska hämta alla
+    app.MapGet("/admin", Admin.AllUsers ).RequireAuthorization("admin_route");
     app.Run("http://localhost:3001");
 
 }

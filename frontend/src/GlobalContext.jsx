@@ -10,6 +10,7 @@ const GlobalProvider = ({ children }) => {
         Email: '',
         Id: '',
         Role: '',
+        Ad: '',
         loggedIn: ''
     });
     const [modalOpen, setModalOpen] = useState(false);

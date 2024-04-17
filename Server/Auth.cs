@@ -22,7 +22,7 @@ namespace Server
 
             try
             {
-                string query = "SELECT id, role, email, username FROM users WHERE username = @Username AND password = @Password";
+                string query = "SELECT id, role, email, username, ad FROM users WHERE username = @Username AND password = @Password";
                 MySqlCommand command = new(query, state.DB);
 
                 command.Parameters.AddWithValue("@Username", loginRequest.Username);
@@ -41,6 +41,7 @@ namespace Server
                             Username = reader.GetString("username"),
                             Email = reader.GetString("email"),
                             Role = reader.GetString("role"),
+                            Ad = reader.GetInt32("ad")
                             // Add other properties as needed
                         };
 
@@ -141,6 +142,7 @@ namespace Server
             public string? Password { get; set; }
             public int? Id { get; set; }
             public string? Role { get; set; }
+            public int? Ad { get; set; }
             // Add any other properties as needed
         }
     }
