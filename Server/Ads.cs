@@ -186,7 +186,22 @@ internal class Ads
             new("@UserId", adData.UserId),
             new("@EndTimestamp", adData.EndTimestamp),
             new("@Children", adData.Children)]);
-            // Execute the SQL command to insert the ad into the database
+
+
+            var adIdQuery = "SELECT LAST_INSERT_ID();";
+            var adIdObject = await MySqlHelper.ExecuteScalarAsync(state.DB, adIdQuery);
+            int adId = Convert.ToInt32(adIdObject);
+
+            
+            var userQuery = "UPDATE users SET ad = @AdId WHERE id = @UserId";
+            var userParameters = new List<MySqlParameter>
+            {
+                new MySqlParameter("@AdId", adId),
+                new MySqlParameter("@UserId", adData.UserId)
+            };
+
+            await MySqlHelper.ExecuteNonQueryAsync(state.DB, userQuery, userParameters.ToArray());
+
             return TypedResults.Ok("Ad added successfully");
         }
         catch (MySqlException ex)
