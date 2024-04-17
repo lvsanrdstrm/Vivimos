@@ -56,7 +56,7 @@ internal class Ads
                     AdActive = reader.IsDBNull(reader.GetOrdinal("adActive")) ? (bool?)null : reader.GetBoolean("adActive"),
                     EndDate = reader.IsDBNull(reader.GetOrdinal("endDate")) ? (DateTime?)null : reader.GetDateTime("endDate"),
                     UserId = reader.IsDBNull(reader.GetOrdinal("userId")) ? (int?)null : reader.GetInt32("userId"),
-                    EndTimestamp = reader.IsDBNull(reader.GetOrdinal("endTimestamp")) ? (int?)null : reader.GetInt32("endTimestamp"),
+                    EndTimestamp = reader.IsDBNull(reader.GetOrdinal("endTimestamp")) ? (int?)null : reader.GetInt64("endTimestamp"),
                     Children = reader.IsDBNull(reader.GetOrdinal("children")) ? null : reader.GetString("children")
                 };
 
