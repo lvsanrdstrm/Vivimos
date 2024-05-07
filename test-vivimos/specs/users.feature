@@ -12,4 +12,4 @@ Feature: User actions
     When I click on "Registrera dig"
     And I enter my user credentials
     And I click on "Registrera"
-    Then I should have registrered a new users
+    Then I should have registrered a new user
