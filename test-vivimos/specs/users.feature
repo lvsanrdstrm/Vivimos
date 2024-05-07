@@ -9,7 +9,7 @@ Feature: User actions
 
   Scenario: Register user
     Given I am on the vivimos page
-    When I click on Skapa ny användare
-    And I enter user credentials
-    And I click on registrera
-    Then I should have registrered a new user
+    When I click on "Registrera dig"
+    And I enter my user credentials
+    And I click on "Registrera"
+    Then I should have registrered a new users
