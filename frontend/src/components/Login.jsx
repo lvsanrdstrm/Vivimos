@@ -39,7 +39,7 @@ function Login() {
     <div className='login-container'>
       {!activeUser.loggedIn ? (
         <>
-          <button value='login' onClick={handleButtonClick}> Logga in</button>
+          <button className="loginButton" value='login' onClick={handleButtonClick}> Logga in</button>
           <button value='register' onClick={handleButtonClick}>Registera dig</button>
         </>
       ) : (

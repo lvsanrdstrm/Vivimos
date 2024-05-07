@@ -1,0 +1,12 @@
+import { Given, When, Then } from "@badeball/cypress-cucumber-preprocessor";
+
+/* No duplicate steps, this one already in individual.js
+Given('I am on the {string} page', (a) => {});*/
+
+When('I click on {string}', (a) => {
+  // TODO: implement step
+});
+
+Then('I should see {string} as the title', (a) => {
+  // TODO: implement step
+});

@@ -3,7 +3,7 @@ import { Given, When, Then } from "@badeball/cypress-cucumber-preprocessor";
 
 When('I click on the "Logga in" button', () => {
   // Click on the "Logga in" button
-  cy.contains('Logga in').click();
+  cy.get('.loginButton').click();
 });
 
 
@@ -33,4 +33,3 @@ Given('I click on the "Login" button', () => {
 Then('I should see a {string} title', (title) => {
   cy.get('[href="/users/:id"]').should('have.text', title)
 });
-

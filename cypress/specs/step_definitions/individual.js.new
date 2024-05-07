@@ -1,0 +1,13 @@
+import { Given, When, Then } from "@badeball/cypress-cucumber-preprocessor";
+
+Given('I am on the {string} page', (a) => {
+  // TODO: implement step
+});
+
+When('I click on an ad title', () => {
+  // TODO: implement step
+});
+
+Then('I should be on an individual ad site', () => {
+  // TODO: implement step
+});
