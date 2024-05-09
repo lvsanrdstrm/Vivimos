@@ -8,4 +8,3 @@ Feature: Login
     And I type in my username and password
     And I click on the "Login" button
     Then I should see a "Min sida" title
-
