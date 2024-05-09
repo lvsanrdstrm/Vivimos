@@ -10,12 +10,12 @@ When('I click on the {string} nav title', (a) => {
   cy.get('[href="/createAd"]').click();
 });
 
-When('I am redirected to the {string} site', (a) => {
-  // TODO: implement step
+When('I am redirected to the {string} site', (expectedUrl) => {
+  cy.url().should('include', expectedUrl);
 });
 
 When('I click on the continue button', (a) => {
-  // TODO: implement step
+  cy.get(':nth-child(26)')
 });
 
 When('I am redirected to the second page', () => {
