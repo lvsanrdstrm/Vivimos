@@ -5,6 +5,6 @@ Feature: Place bid
     Given I am on the "/" page
     When I log in
     When I click on the bidding button
-    And I get redirected to the "Bekräfta bud" site
+    And I can see "Bekräfta bud" heading
     And I click on bid-placing button
-    Then a "Ditt bud har sparats" alert should pop up
+    Then a "Ditt bud har sparats" paragraph should be visible

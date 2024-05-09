@@ -17,14 +17,14 @@ When('I click on the bidding button', () => {
   cy.get(':nth-child(2) > .ad-right > .button-container > button').click();
 });
 
-When('I get redirected to the {string} site', (expectedUrl) => {
-  cy.url().should('include', expectedUrl);
+When('I can see {string} heading', (expectedText) => {
+  cy.get('h2').should('include.text', expectedText);
 });
 
 When('I click on bid-placing button', () => {
   cy.get('input').click();
 });
 
-Then('a {string} alert should pop up', (a) => {
-  // TODO: implement step
+Then('a {string} paragraph should be visible', (a) => {
+  cy.get('#sparatBud').should('be.visible');
 });
