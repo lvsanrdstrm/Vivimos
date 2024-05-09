@@ -22,8 +22,6 @@ function ConfirmBid() {
 
     if (result.ok) {
       setShowConfirmation(true);
-      console.log('Confirmation set to true');
-      //navigate('/');
     } else if (result.status === 400) {
       alert('Något var fel med din data när vi försökte spara ditt bud');
     } else if (result.status === 404) {
@@ -33,12 +31,11 @@ function ConfirmBid() {
     }
   }
 
-
   return (
     <form onSubmit={submitBid} method="POST" action={`/api/bids/${id}`}>
       <h2>Bekräfta bud</h2>
       <p>Auktion: {id}</p>
-      <input type="submit" value="Lägg ditt bud" />
+      {!showConfirmation && <input type="submit" value="Lägg ditt bud" />}
       {showConfirmation && <p id="sparatBud">Ditt bud har sparats.</p>}
     </form>
   );
