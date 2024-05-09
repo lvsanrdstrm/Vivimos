@@ -481,6 +481,7 @@ function Section5({ form, handleChange }) {
     </>
   );
 }
+
 function Section6({ form, handleChange }) {
   return (
     <>
@@ -519,15 +520,12 @@ function Section6({ form, handleChange }) {
     </>
   );
 }
+
 function CreateAd() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const { activeUser } = useContext(GlobalContext);
-  const [formData, setFormData] = useState({});
-
-
   const totalSections = 6;
   const defaultAd = {
-
     headline: "",
     county: "",
     dwelling: "",
@@ -560,8 +558,9 @@ function CreateAd() {
     endDate: "",
   };
 
-
   const [form, setForm] = useState(defaultAd);
+  const [currentSection, setCurrentSection] = useState(1);
+  const [message, setMessage] = useState("");
 
   const handleChange = (event) => {
     const { name, value, type, checked } = event.target;
@@ -591,17 +590,15 @@ function CreateAd() {
     }));
   }
 
-  const [currentSection, setCurrentSection] = useState(1);
-
   const prevSection = () => {
     if (currentSection > 1) {
       setCurrentSection(currentSection - 1);
     }
   };
+
   const nextSection = () => {
     setCurrentSection(currentSection + 1);
   };
-
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -612,18 +609,11 @@ function CreateAd() {
     }
     const EndTimestamp = new Date(form.endDate).getTime();
 
-    //console.log('Form data:', form);
-    //console.log(activeUser.Id);
-
     const formDataWithId = {
       ...form,
       UserId: activeUser.Id,
       EndTimestamp,
     };
-    console.log('With user Id:', formDataWithId);
-
-    // Om konvertera till objekt.
-    // const info = Object.fromEntries(data);
 
     const response = await fetch('/api/ads', {
       method: 'POST',
@@ -631,16 +621,14 @@ function CreateAd() {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(formDataWithId),
-
     });
 
-
-
     if (response.ok) {
-      form.adActive
-        ? alert(`Tack! Din annons har nu publicerats! Den är aktiv till och med ${form.endDate}. Lycka till med livsbytet!`)
-        : alert('Din annons har sparats. Du kan publicera den när du vill på "Min sida"');
-      navigate('/');
+      const successMessage = form.adActive
+        ? `Tack! Din annons har nu publicerats! Den är aktiv till och med ${form.endDate}. Lycka till med livsbytet!`
+        : 'Din annons har sparats. Du kan publicera den när du vill på "Min sida"';
+      setMessage(successMessage);
+      //navigate('/');
     } else {
       console.error('Error saving data');
     }
@@ -654,6 +642,8 @@ function CreateAd() {
       {currentSection === 4 && <Section4 form={form} handleChange={handleChange} />}
       {currentSection === 5 && <Section5 form={form} handleChange={handleChange} />}
       {currentSection === 6 && <Section6 form={form} handleChange={handleChange} />}
+
+      {message && <p>{message}</p>}
 
       <br />
       <br />
