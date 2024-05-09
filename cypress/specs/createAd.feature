@@ -5,7 +5,7 @@ Feature: Create ad
     Given I am on the "/" page
     When I log in
     When I click on the "skapa annons" nav title
-    And I am redirected to the "createAd" site
+    And I am redirected to the "createAd" page
     And I click on the continue button
     And I am redirected to the second page
     And I click on the continue button
@@ -18,4 +18,4 @@ Feature: Create ad
     And I am redirected to the final page
     And I mark "Spara"
     And I click on "Submit"
-    Then "Din annons har sparats!" should be displayed
+    Then a "Din annons har sparats!" message should show

@@ -13,18 +13,10 @@ When('I log in', () => {
   });
 });
 
-When('I click on the bidding button', () => {
-  cy.get(':nth-child(2) > .ad-right > .button-container > button').click();
-});
-
-When('I can see {string} heading', (expectedText) => {
-  cy.get('h2').should('include.text', expectedText);
-});
-
-When('I click on bid-placing button', () => {
+When('I click on the Lägg ditt bud button', () => {
   cy.get('input').click();
 });
 
-Then('a {string} paragraph should be visible', (a) => {
-  cy.get('#sparatBud').should('be.visible');
+Then('a {string} message should show', (message) => {
+  cy.get('.page-container').should('contain', message);
 });

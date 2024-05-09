@@ -10,7 +10,7 @@ When('I click on the {string} nav title', (a) => {
   cy.get('[href="/createAd"]').click();
 });
 
-When('I am redirected to the {string} site', (expectedUrl) => {
+When('I am redirected to the {string} page', (expectedUrl) => {
   cy.url().should('include', expectedUrl);
 });
 
