@@ -17,6 +17,8 @@ When('I click on the Lägg ditt bud button', () => {
   cy.get('input').click();
 });
 
-Then('a {string} message should show', (message) => {
+When('I am redirected to the {string} page', (a) => { });
+
+Then('I should see {string}', (message) => {
   cy.get('.page-container').should('contain', message);
 });

@@ -9,3 +9,7 @@ Cypress.Commands.add('login', () => {
     cy.get('form > button').click();
   });
 });
+
+Cypress.Commands.add('buttonByIndex', (index) => {
+  return cy.get(`:nth-child(${index}) > input`);
+});

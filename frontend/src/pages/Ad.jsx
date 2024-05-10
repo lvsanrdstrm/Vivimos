@@ -482,41 +482,47 @@ function Section5({ form, handleChange }) {
   );
 }
 
-function Section6({ form, handleChange }) {
+function Section6({ form, handleChange, submitted }) {
+
   return (
     <>
-      <h2>Vill du publicera din annons nu eller spara den till senare?</h2>
-      <label>
-        Publicera
-        <input
-          type="radio"
-          name="adActive"
-          value={true}
-          checked={form.adActive === true}
-          onChange={handleChange}
-        />
-      </label>
-      <label>
-        Spara
-        <input
-          type="radio"
-          name="adActive"
-          value={false}
-          checked={form.adActive === false}
-          onChange={handleChange}
-        />
-      </label>
-      {form.adActive && (
-        <>
-          <h3>Välj ett slutdatum för din annons:</h3>
-          <input
-            type="date"
-            name="endDate"
-            value={form.endDate}
-            onChange={handleChange}
-          />
-        </>
-      )}
+      {!submitted &&
+        (<>
+          <h2>Vill du publicera din annons nu eller spara den till senare?</h2>
+          <label>
+            Publicera
+            <input
+              type="radio"
+              name="adActive"
+              value={true}
+              checked={form.adActive === true}
+              onChange={handleChange}
+            />
+          </label>
+
+          <label>
+            Spara
+            <input
+              type="radio"
+              name="adActive"
+              value={false}
+              checked={form.adActive === false}
+              onChange={handleChange}
+            />
+          </label>
+
+          {form.adActive && (
+            <>
+              <h3>Välj ett slutdatum för din annons:</h3>
+              <input
+                type="date"
+                name="endDate"
+                value={form.endDate}
+                onChange={handleChange}
+              />
+            </>
+          )}
+        </>)}
     </>
   );
 }
@@ -561,6 +567,7 @@ function CreateAd() {
   const [form, setForm] = useState(defaultAd);
   const [currentSection, setCurrentSection] = useState(1);
   const [message, setMessage] = useState("");
+  const [submitted, setSubmitted] = useState(false);
 
   const handleChange = (event) => {
     const { name, value, type, checked } = event.target;
@@ -624,6 +631,7 @@ function CreateAd() {
     });
 
     if (response.ok) {
+
       const successMessage = form.adActive
         ? `Tack! Din annons har nu publicerats! Den är aktiv till och med ${form.endDate}. Lycka till med livsbytet!`
         : 'Din annons har sparats. Du kan publicera den när du vill på "Min sida"';
@@ -632,6 +640,7 @@ function CreateAd() {
     } else {
       console.error('Error saving data');
     }
+    setSubmitted(true);
   };
 
   return (
@@ -641,25 +650,28 @@ function CreateAd() {
       {currentSection === 3 && <Section3 form={form} handleChange={handleChange} />}
       {currentSection === 4 && <Section4 form={form} handleChange={handleChange} />}
       {currentSection === 5 && <Section5 form={form} handleChange={handleChange} />}
-      {currentSection === 6 && <Section6 form={form} handleChange={handleChange} />}
+      {currentSection === 6 && <Section6 form={form} handleChange={handleChange} submitted={submitted} />}
 
       {message && <p>{message}</p>}
 
       <br />
       <br />
-
-      {currentSection > 1 && (
-        <button type="button" onClick={prevSection}>Previous</button>
-      )}
-
-      {currentSection < totalSections && (
-        <button type="button" onClick={nextSection}>Continue</button>
-      )}
-
-      {currentSection === totalSections && (
+      {!submitted && (
         <>
-          <br />
-          <button type="submit">Submit</button>
+          {currentSection > 1 && (
+            <button type="button" onClick={prevSection}>Previous</button>
+          )}
+
+          {currentSection < totalSections && (
+            <button type="button" onClick={nextSection}>Continue</button>
+          )}
+
+          {currentSection === totalSections && (
+            <>
+              <br />
+              <button type="submit">Submit</button>
+            </>
+          )}
         </>
       )}
     </form>

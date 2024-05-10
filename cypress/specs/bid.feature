@@ -7,4 +7,4 @@ Feature: Place bid
     When I click on the "Lägg ett bud" button
     And I am redirected to the "bid" page
     And I click on the Lägg ditt bud button
-    Then a "Ditt bud har sparats" message should show
+    Then I should see "Ditt bud har sparats" 
