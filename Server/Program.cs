@@ -12,7 +12,7 @@ using MySql.Data.MySqlClient;
 
 
 
-string connectionString = "server=localhost;uid=root;pwd=mypassword;database=vivimos;port=3306";
+string connectionString = "server=127.0.0.1;uid=root;pwd=mypassword;database=vivimos;port=3306";
 var builder = WebApplication.CreateBuilder(args);
 
 try
@@ -66,13 +66,13 @@ app.MapFallback(async context =>
   await context.Response.SendFileAsync(Path.Combine(distPath, "index.html"));
 
 });
-    app.MapPost("/ads", Ads.AddAd);
+    app.MapPost("/api/ads", Ads.AddAd);
     app.MapPost("/api/auth/register", Auth.Register);
-    app.MapPost("/auth/login", Auth.Login);
-    app.MapGet("/ad/{id}", Ads.GetSingle); //ska hämta den man vill ha
-    app.MapGet("/ads", Ads.AllAds); // denna ska hämta alla
-    app.MapPost("/bids/{id}", Auctions.PlaceBid).RequireAuthorization("user");
-    app.Run("http://localhost:3001");
+    app.MapPost("/api/auth/login", Auth.Login);
+    app.MapGet("/api/ad/{id}", Ads.GetSingle); //ska hämta den man vill ha
+    app.MapGet("/api/ads", Ads.AllAds); // denna ska hämta alla
+    app.MapPost("/api/bids/{id}", Auctions.PlaceBid).RequireAuthorization("user");
+    app.Run();
 
 }
 catch (MySqlException e)
