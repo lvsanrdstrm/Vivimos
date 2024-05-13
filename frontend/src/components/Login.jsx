@@ -11,6 +11,7 @@ function Login() {
   const { modalOpen, setModalOpen } = useContext(GlobalContext)
   const { loginOpen, setLoginOpen } = useContext(GlobalContext)
   const { regOpen, setRegOpen } = useContext(GlobalContext)
+  const [registrationSuccess, setRegistrationSuccess] = useState(false);
 
 
   const [formData, setFormData] = useState({
@@ -70,24 +71,28 @@ function Login() {
       {modalOpen && regOpen && (
         <Modal>
           <h2 className="modal-heading">Registrera ny användare</h2>
-          <form onSubmit={e => createUser(e)}>
-            <label className="modal-label">
-              Användarnamn:
-              <input type="text" name="username" className="modal-input"></input>
-            </label>
-            <br />
-            <label className="modal-label">
-              Email:
-              <input type="email" name="email" className="modal-input"></input>
-            </label>
-            <br />
-            <label className="modal-label">
-              Lösenord:
-              <input type="password" name="password" className="modal-input"></input>
-            </label>
-            <br />
-            <button className="modal-button" onClick={handleReg}>Registrera</button>
-          </form>
+          {registrationSuccess ? (
+            <p>Registreringen lyckades!</p>
+          ) : (
+            <form onSubmit={e => createUser(e)}>
+              <label className="modal-label">
+                Användarnamn:
+                <input type="text" name="username" className="modal-input"></input>
+              </label>
+              <br />
+              <label className="modal-label">
+                Email:
+                <input type="email" name="email" className="modal-input"></input>
+              </label>
+              <br />
+              <label className="modal-label">
+                Lösenord:
+                <input type="password" name="password" className="modal-input"></input>
+              </label>
+              <br />
+              <button type="submit" className="modal-button">Registrera</button>
+            </form>
+          )}
         </Modal>
       )}
     </div>
@@ -96,9 +101,6 @@ function Login() {
 
 
 
-  useEffect(() => {
-    console.log(activeUser)
-  }, [activeUser])
 
   function handleChange(e) {
     setFormData((prevFormData) => ({
@@ -114,11 +116,12 @@ function Login() {
      formData = []
    } */
 
-  function handleReg() {
-    console.log('handle reg')
-    setShowReg(true)
-    setModalOpen(false)
-  }
+  // testar ta bort, verkar vara onödig
+  // function handleReg() {
+  //   console.log('handle reg')
+  //   setShowReg(true)
+  //   setModalOpen(false)
+  // }
 
   async function fetchUser(e, formData) {
     e.preventDefault();
@@ -225,6 +228,7 @@ function Login() {
         const data = await response.json();
         console.log('New user added:', data);
         setActiveUserData({ ...userData, loggedIn: true });
+        setRegistrationSuccess(true);
       } else {
         console.error('Error adding new user:', response.statusText);
       }
