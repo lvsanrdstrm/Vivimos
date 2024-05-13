@@ -118,7 +118,7 @@ function AdDetailed() {
       )}
       <p>Denna annons är aktiv till och med {ad.EndDate}.</p>
       {/*ad.bids ? (<p>Antal bud: {ad.bids.length}</p>) : null*/}
-      <button onClick={handleOfferButton}>Lägg ett bud</button>
+      <button value="Lägg ett bud" onClick={handleOfferButton}>Lägg ett bud</button>
     </div>
   );
 }
