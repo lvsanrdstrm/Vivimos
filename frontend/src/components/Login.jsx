@@ -3,6 +3,7 @@ import { GlobalContext } from "../GlobalContext"
 import '../assets/styles/login.css'
 import { createPortal } from "react-dom"
 import Modal from './Modal.jsx'
+import { Link } from "react-router-dom"
 
 
 function Login() {
@@ -11,6 +12,7 @@ function Login() {
   const { modalOpen, setModalOpen } = useContext(GlobalContext)
   const { loginOpen, setLoginOpen } = useContext(GlobalContext)
   const { regOpen, setRegOpen } = useContext(GlobalContext)
+  const [registrationSuccess, setRegistrationSuccess] = useState(false);
 
 
   const [formData, setFormData] = useState({
@@ -70,24 +72,32 @@ function Login() {
       {modalOpen && regOpen && (
         <Modal>
           <h2 className="modal-heading">Registrera ny användare</h2>
-          <form onSubmit={e => createUser(e)}>
-            <label className="modal-label">
-              Användarnamn:
-              <input type="text" name="username" className="modal-input"></input>
-            </label>
-            <br />
-            <label className="modal-label">
-              Email:
-              <input type="email" name="email" className="modal-input"></input>
-            </label>
-            <br />
-            <label className="modal-label">
-              Lösenord:
-              <input type="password" name="password" className="modal-input"></input>
-            </label>
-            <br />
-            <button className="modal-button" onClick={handleReg}>Registrera</button>
-          </form>
+          {registrationSuccess ? (
+            <>
+              <p>Välkommen! Du kan du lägga upp en annons och lägga bud på andras annonser.</p>
+              <Link to={`/users/:id`}>
+                <button className="min-sida-button" onClick={() => setModalOpen(false)}>Gå till Min Sida</button>
+              </Link> </>
+          ) : (
+            <form onSubmit={e => createUser(e)}>
+              <label className="modal-label">
+                Användarnamn:
+                <input type="text" name="username" className="modal-input"></input>
+              </label>
+              <br />
+              <label className="modal-label">
+                Email:
+                <input type="email" name="email" className="modal-input"></input>
+              </label>
+              <br />
+              <label className="modal-label">
+                Lösenord:
+                <input type="password" name="password" className="modal-input"></input>
+              </label>
+              <br />
+              <button type="submit" className="modal-button">Registrera</button>
+            </form>
+          )}
         </Modal>
       )}
     </div>
@@ -96,9 +106,6 @@ function Login() {
 
 
 
-  useEffect(() => {
-    console.log(activeUser)
-  }, [activeUser])
 
   function handleChange(e) {
     setFormData((prevFormData) => ({
@@ -114,11 +121,12 @@ function Login() {
      formData = []
    } */
 
-  function handleReg() {
-    console.log('handle reg')
-    setShowReg(true)
-    setModalOpen(false)
-  }
+  // testar ta bort, verkar vara onödig
+  // function handleReg() {
+  //   console.log('handle reg')
+  //   setShowReg(true)
+  //   setModalOpen(false)
+  // }
 
   async function fetchUser(e, formData) {
     e.preventDefault();
@@ -225,13 +233,14 @@ function Login() {
         const data = await response.json();
         console.log('New user added:', data);
         setActiveUserData({ ...userData, loggedIn: true });
+        setRegistrationSuccess(true);
       } else {
         console.error('Error adding new user:', response.statusText);
       }
     } catch (error) {
       console.error('Error adding new user:', error);
     } finally {
-      setModalOpen(false);
+      //setModalOpen(false);
     }
   }
 

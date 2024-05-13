@@ -9,9 +9,10 @@ function Filter() {
   function filter(e) {
     let input = e.target.value
     setFilteredAds(ads.filter(item =>
-      item.headline.includes(input) ||
-      item.county.includes(input) ||
-      item.children.includes(input)))
+      item.Headline.toLowerCase().includes(input) ||
+      item.Presentation.toLowerCase().includes(input) ||
+      item.County.toLowerCase().includes(input) ||
+      item.Gender.toLowerCase().includes(input)))
   }
 
   return (

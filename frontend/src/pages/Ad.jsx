@@ -481,53 +481,57 @@ function Section5({ form, handleChange }) {
     </>
   );
 }
-function Section6({ form, handleChange }) {
+
+function Section6({ form, handleChange, submitted }) {
+
   return (
     <>
-      <h2>Vill du publicera din annons nu eller spara den till senare?</h2>
-      <label>
-        Publicera
-        <input
-          type="radio"
-          name="adActive"
-          value={true}
-          checked={form.adActive === true}
-          onChange={handleChange}
-        />
-      </label>
-      <label>
-        Spara
-        <input
-          type="radio"
-          name="adActive"
-          value={false}
-          checked={form.adActive === false}
-          onChange={handleChange}
-        />
-      </label>
-      {form.adActive && (
-        <>
-          <h3>Välj ett slutdatum för din annons:</h3>
-          <input
-            type="date"
-            name="endDate"
-            value={form.endDate}
-            onChange={handleChange}
-          />
-        </>
-      )}
+      {!submitted &&
+        (<>
+          <h2>Vill du publicera din annons nu eller spara den till senare?</h2>
+          <label>
+            Publicera
+            <input
+              type="radio"
+              name="adActive"
+              value={true}
+              checked={form.adActive === true}
+              onChange={handleChange}
+            />
+          </label>
+
+          <label>
+            Spara
+            <input
+              type="radio"
+              name="adActive"
+              value={false}
+              checked={form.adActive === false}
+              onChange={handleChange}
+            />
+          </label>
+
+          {form.adActive && (
+            <>
+              <h3>Välj ett slutdatum för din annons:</h3>
+              <input
+                type="date"
+                name="endDate"
+                value={form.endDate}
+                onChange={handleChange}
+              />
+            </>
+          )}
+        </>)}
     </>
   );
 }
+
 function CreateAd() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const { activeUser } = useContext(GlobalContext);
-  const [formData, setFormData] = useState({});
-
-
   const totalSections = 6;
   const defaultAd = {
-
     headline: "",
     county: "",
     dwelling: "",
@@ -560,8 +564,10 @@ function CreateAd() {
     endDate: "",
   };
 
-
   const [form, setForm] = useState(defaultAd);
+  const [currentSection, setCurrentSection] = useState(1);
+  const [message, setMessage] = useState("");
+  const [submitted, setSubmitted] = useState(false);
 
   const handleChange = (event) => {
     const { name, value, type, checked } = event.target;
@@ -591,17 +597,15 @@ function CreateAd() {
     }));
   }
 
-  const [currentSection, setCurrentSection] = useState(1);
-
   const prevSection = () => {
     if (currentSection > 1) {
       setCurrentSection(currentSection - 1);
     }
   };
+
   const nextSection = () => {
     setCurrentSection(currentSection + 1);
   };
-
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -612,18 +616,11 @@ function CreateAd() {
     }
     const EndTimestamp = new Date(form.endDate).getTime();
 
-    //console.log('Form data:', form);
-    //console.log(activeUser.Id);
-
     const formDataWithId = {
       ...form,
       UserId: activeUser.Id,
       EndTimestamp,
     };
-    console.log('With user Id:', formDataWithId);
-
-    // Om konvertera till objekt.
-    // const info = Object.fromEntries(data);
 
     const response = await fetch('/api/ads', {
       method: 'POST',
@@ -631,19 +628,19 @@ function CreateAd() {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(formDataWithId),
-
     });
 
-
-
     if (response.ok) {
-      form.adActive
-        ? alert(`Tack! Din annons har nu publicerats! Den är aktiv till och med ${form.endDate}. Lycka till med livsbytet!`)
-        : alert('Din annons har sparats. Du kan publicera den när du vill på "Min sida"');
-      navigate('/');
+
+      const successMessage = form.adActive
+        ? `Tack! Din annons har nu publicerats! Den är aktiv till och med ${form.endDate}. Lycka till med livsbytet!`
+        : 'Din annons har sparats. Du kan publicera den när du vill på "Min sida"';
+      setMessage(successMessage);
+      //navigate('/');
     } else {
       console.error('Error saving data');
     }
+    setSubmitted(true);
   };
 
   return (
@@ -653,23 +650,28 @@ function CreateAd() {
       {currentSection === 3 && <Section3 form={form} handleChange={handleChange} />}
       {currentSection === 4 && <Section4 form={form} handleChange={handleChange} />}
       {currentSection === 5 && <Section5 form={form} handleChange={handleChange} />}
-      {currentSection === 6 && <Section6 form={form} handleChange={handleChange} />}
+      {currentSection === 6 && <Section6 form={form} handleChange={handleChange} submitted={submitted} />}
+
+      {message && <p>{message}</p>}
 
       <br />
       <br />
-
-      {currentSection > 1 && (
-        <button type="button" onClick={prevSection}>Previous</button>
-      )}
-
-      {currentSection < totalSections && (
-        <button type="button" onClick={nextSection}>Continue</button>
-      )}
-
-      {currentSection === totalSections && (
+      {!submitted && (
         <>
-          <br />
-          <button type="submit">Submit</button>
+          {currentSection > 1 && (
+            <button type="button" onClick={prevSection}>Previous</button>
+          )}
+
+          {currentSection < totalSections && (
+            <button type="button" onClick={nextSection}>Continue</button>
+          )}
+
+          {currentSection === totalSections && (
+            <>
+              <br />
+              <button type="submit">Submit</button>
+            </>
+          )}
         </>
       )}
     </form>
