@@ -11,7 +11,7 @@ function Login() {
   const { modalOpen, setModalOpen } = useContext(GlobalContext)
   const { loginOpen, setLoginOpen } = useContext(GlobalContext)
   const { regOpen, setRegOpen } = useContext(GlobalContext)
-
+  const [registrationSuccess, setRegistrationSuccess] = useState(false);
 
   const [formData, setFormData] = useState({
     username: '',
@@ -40,7 +40,7 @@ function Login() {
       {!activeUser.loggedIn ? (
         <>
           <button className="loginButton" value='login' onClick={handleButtonClick}> Logga in</button>
-          <button value='register' onClick={handleButtonClick}>Registera dig</button>
+          <button value='register' onClick={handleButtonClick}>Registrera dig</button>
         </>
       ) : (
         <button value='logout' onClick={handleButtonClick}> Logga ut</button>
@@ -70,24 +70,28 @@ function Login() {
       {modalOpen && regOpen && (
         <Modal>
           <h2 className="modal-heading">Registrera ny användare</h2>
-          <form onSubmit={e => createUser(e)}>
-            <label className="modal-label">
-              Användarnamn:
-              <input type="text" name="username" className="modal-input"></input>
-            </label>
-            <br />
-            <label className="modal-label">
-              Email:
-              <input type="email" name="email" className="modal-input"></input>
-            </label>
-            <br />
-            <label className="modal-label">
-              Lösenord:
-              <input type="password" name="password" className="modal-input"></input>
-            </label>
-            <br />
-            <button className="modal-button" onClick={handleReg}>Registrera</button>
-          </form>
+          {registrationSuccess ? (
+            <p>Välkommen {formData.username}! Du är nu registrerad och kan lägga ut en annons och lägga bud på andras annonser.</p>
+          ) : (
+            <form onSubmit={e => createUser(e)}>
+              <label className="modal-label">
+                Användarnamn:
+                <input type="text" name="username" className="modal-input"></input>
+              </label>
+              <br />
+              <label className="modal-label">
+                Email:
+                <input type="email" name="email" className="modal-input"></input>
+              </label>
+              <br />
+              <label className="modal-label">
+                Lösenord:
+                <input type="password" name="password" className="modal-input"></input>
+              </label>
+              <br />
+              <button className="modal-button" onClick={handleReg}>Registrera</button>
+            </form>
+          )}
         </Modal>
       )}
     </div>
@@ -116,7 +120,7 @@ function Login() {
 
   function handleReg() {
     console.log('handle reg')
-    setShowReg(true)
+    //setShowReg(true)
     setModalOpen(false)
   }
 
@@ -225,6 +229,7 @@ function Login() {
         const data = await response.json();
         console.log('New user added:', data);
         setActiveUserData({ ...userData, loggedIn: true });
+        setRegistrationSuccess(true);
       } else {
         console.error('Error adding new user:', response.statusText);
       }

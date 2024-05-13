@@ -10,8 +10,12 @@ Given('a register modal pops up', () => {
   // TODO: implement step
 });
 
-Given('I type in my username, email, and password', () => {
-  // TODO: implement step
+Given('I type in my user data', () => {
+  cy.get('.modal-body').within(() => {
+    cy.get('[type="text"]').type('blob');
+    cy.get('[type="email"]').type('blob@blob.yes');
+    cy.get('[type="password"]').type('blob');
+  });
 });
 
 /* No duplicate steps, this one already in login.js
