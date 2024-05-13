@@ -14,8 +14,8 @@ When('I type in my user credentials', () => {
 
 
 When('I click on the {string} button', (buttonName) => {
-  cy.contains('button', buttonName).click();
-
+  //cy.contains('button', buttonName).click();
+  cy.get(`button[value="${buttonName}"]`).click();
 });
 
 

@@ -23,10 +23,10 @@ function Login() {
   function handleButtonClick(e) {
     console.log(e)
     setModalOpen(true)
-    if (e.target.value === 'login') {
+    if (e.target.value === 'Logga in') {
       setLoginOpen(true)
     }
-    else if (e.target.value === 'register') {
+    else if (e.target.value === 'Registrera dig') {
       setRegOpen(true)
     }
     else if (e.target.value === 'logout') {
@@ -41,8 +41,8 @@ function Login() {
     <div className='login-container'>
       {!activeUser.loggedIn ? (
         <>
-          <button value='login' onClick={handleButtonClick}> Logga in</button>
-          <button value='register' onClick={handleButtonClick}>Registera dig</button>
+          <button value='Logga in' onClick={handleButtonClick}> Logga in</button>
+          <button value='Registrera dig' onClick={handleButtonClick}>Registera dig</button>
         </>
       ) : (
         <button value='logout' onClick={handleButtonClick}> Logga ut</button>
@@ -63,7 +63,7 @@ function Login() {
               </label>
               <input type="password" name="password" className="modal-input" value={formData.password} onChange={e => handleChange(e)}></input>
               <br />
-              <button type="submit">Login</button>
+              <button value="Login" type="submit">Login</button>
             </form>
           </Modal>, document.body
         )
@@ -95,7 +95,7 @@ function Login() {
                 <input type="password" name="password" className="modal-input"></input>
               </label>
               <br />
-              <button type="submit" className="modal-button">Registrera</button>
+              <button value="Registrera" type="submit" className="modal-button">Registrera</button>
             </form>
           )}
         </Modal>
