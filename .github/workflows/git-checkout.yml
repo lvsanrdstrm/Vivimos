@@ -1,28 +1,28 @@
-name: Deploy to Web Server
+# name: Deploy to Web Server
 
-# Trigger which git action (push, pull_request)
-# in which branch(es) should start the jobs...
-on:
-  push:
-    branches: 
-      - main  
+# # Trigger which git action (push, pull_request)
+# # in which branch(es) should start the jobs...
+# on:
+#   push:
+#     branches: 
+#       - main  
 
-# jobs to run
-jobs:
-  # build, the name of the job, a server to create and auto configure
-  build:
-    name: Deploy  to web server
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+# # jobs to run
+# jobs:
+#   # build, the name of the job, a server to create and auto configure
+#   build:
+#     name: Deploy  to web server
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v2
 
-      - name: Deploy code via SSH
-        uses: appleboy/scp-action@v0.1.4
-        with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USERNAME }}
-          password: ${{ secrets.PASSWORD }}
-          port: ${{ secrets.PORT }}
-          source: '*.*'
-          target: /var/www/html
+#       - name: Deploy code via SSH
+#         uses: appleboy/scp-action@v0.1.4
+#         with:
+#           host: ${{ secrets.HOST }}
+#           username: ${{ secrets.USERNAME }}
+#           password: ${{ secrets.PASSWORD }}
+#           port: ${{ secrets.PORT }}
+#           source: '*.*'
+#           target: /var/www/html
