@@ -3,7 +3,7 @@ Feature: Login
 
   Scenario:
     Given I am on the "/" page
-    And I click on the "Logga in" button
+    And I click on "login"
     And a modal pops up
     And I type in my user credentials
     And I click on the "Login" button
