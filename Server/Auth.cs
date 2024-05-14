@@ -25,13 +25,13 @@ namespace Server
                 string query = "SELECT id, role, email, username FROM users WHERE username = @Username AND password = @Password";
 
 
-                using (var reader = MySqlHelper.ExecuteReader(state.DB, query,
+                using var reader = MySqlHelper.ExecuteReader(state.DB, query,
         [
                 new("@Username", loginRequest.Username),
                 new("@Password", loginRequest.Password)
         ]
-                    ))
-                {
+                    );
+                
 
 
                     if (reader.Read())
@@ -61,14 +61,19 @@ namespace Server
 
                         var claimsIdentity = new ClaimsIdentity(claims, "opa23.molez.vivimos");
                         await ctx.SignInAsync("opa23.molez.vivimos", new ClaimsPrincipal(claimsIdentity));
-                    }
+                        return TypedResults.Ok();
                 }
-                return TypedResults.Problem("Wrong email or password");
+                else
+                {
+                    return TypedResults.Problem("Wrong email or password");
+
+                }
+
             }
             catch (InvalidCredentialException ex)
             {
                 Console.WriteLine($"Invalid credentials: {ex.Message}");
-                return TypedResults.Problem("Wrong email or password");
+                return TypedResults.Problem("Wrong email or password exception");
             }
             catch (UnauthorizedAccessException ex)
             {
