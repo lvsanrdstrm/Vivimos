@@ -31,9 +31,9 @@ namespace Server
                 new("@Password", loginRequest.Password)
         ]
                     );
-                
 
 
+                Console.WriteLine(reader.FieldCount);
                     if (reader.Read())
                     {
 
