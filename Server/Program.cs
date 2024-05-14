@@ -14,18 +14,14 @@ using MySql.Data.MySqlClient;
 
 string connectionString = "server=127.0.0.1;uid=root;pwd=mypassword;database=vivimos;port=3306";
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddSingleton(new State(connectionString));
+builder.Services.AddAuthentication().AddCookie("opa23.molez.vivimos");
 
+builder.Services.AddAuthorizationBuilder().AddPolicy("user",policy =>policy.RequireRole("user") ).AddPolicy("admin", policy => policy.RequireRole("admin"));
 try
 {
 
-    builder.Services.AddSingleton(new State(connectionString));
-    builder.Services.AddAuthorization(options =>
-    {
-        options.AddPolicy("admin_route", policy => policy.RequireRole("admin"));
-        options.AddPolicy("user", policy => policy.RequireRole("user"));
-
-    });
-    builder.Services.AddAuthentication().AddCookie("opa23.molez.vivimos");
+    
 builder.WebHost.ConfigureKestrel(serverOptions =>
 {
   serverOptions.ListenAnyIP(3000);
