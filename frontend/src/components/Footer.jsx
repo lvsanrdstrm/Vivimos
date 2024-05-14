@@ -2,9 +2,9 @@ import React from 'react'
 import '../assets/styles/footer.css'
 
 function Footer() {
-  return(
+  return (
     <div className='footer-container'>
-      <h3>© 2024 MOLEZ Inc.</h3>
+      <h3>© 2024 LO Inc.</h3>
     </div>
   )
 }
