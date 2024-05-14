@@ -105,7 +105,7 @@ namespace Server
                 // Add parameters to the command to prevent SQL injection
 
                 // Execute the SQL command to insert the user into the database
-                MySqlHelper.ExecuteNonQueryAsync(state.DB, query, [
+                await MySqlHelper.ExecuteNonQueryAsync(state.DB, query, [
                new("@Username", user.Username),
                 new("@Email", user.Email),
                 new("@Password", user.Password)
