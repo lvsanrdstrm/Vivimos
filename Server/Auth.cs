@@ -61,12 +61,6 @@ namespace Server
 
                         var claimsIdentity = new ClaimsIdentity(claims, "opa23.molez.vivimos");
                         await ctx.SignInAsync("opa23.molez.vivimos", new ClaimsPrincipal(claimsIdentity));
-
-
-
-                        var userData = JsonConvert.SerializeObject(user);
-                        ctx.Response.Headers.Add("Content-Type", "application/json");
-                        return TypedResults.Ok(userData);
                     }
                 }
                 return TypedResults.Problem("Wrong email or password");
