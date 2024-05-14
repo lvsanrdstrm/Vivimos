@@ -659,17 +659,17 @@ function CreateAd() {
       {!submitted && (
         <>
           {currentSection > 1 && (
-            <button type="button" onClick={prevSection}>Previous</button>
+            <button value="Previous" type="button" onClick={prevSection}>Previous</button>
           )}
 
           {currentSection < totalSections && (
-            <button type="button" onClick={nextSection}>Continue</button>
+            <button value="Continue" type="button" onClick={nextSection}>Continue</button>
           )}
 
           {currentSection === totalSections && (
             <>
               <br />
-              <button type="submit">Submit</button>
+              <button value="Submit" type="submit">Submit</button>
             </>
           )}
         </>

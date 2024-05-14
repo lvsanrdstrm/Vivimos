@@ -65,7 +65,7 @@ function AdList() {
           ) : null}*/
           <div className="button-container">
             {activeUser.loggedIn ? (
-              <button onClick={() => handleOfferButton(ad.Id)}>Lägg ett bud</button>
+              <button value="Lägg ett bud" onClick={() => handleOfferButton(ad.Id)}>Lägg ett bud</button>
             ) : (
               <button onClick={() => alert("Du måste logga in för att kunna lägga ett bud.")}>Lägg ett bud</button>
             )}
