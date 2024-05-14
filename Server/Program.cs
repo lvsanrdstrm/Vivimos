@@ -50,9 +50,9 @@ app.UseStaticFiles(new StaticFileOptions
   FileProvider= fileProvider,
   RequestPath = ""
 });
-
-app.UseRouting();
     app.UseAuthorization();
+    app.UseRouting();
+    
     // MapFallback gör så att när det skrivs in en URL i webläsaren som vår backend inte känner igen, så ska den // skicka tillbaka vår index.html som ligger i dist (dist/index.html) och låta frontend ta hand om routingen.
     // Det är default use case när man jobbar med en SPA ( Single Page Application ) så som ramverket React etc.
 
