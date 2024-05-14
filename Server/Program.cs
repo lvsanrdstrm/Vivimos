@@ -35,6 +35,8 @@ builder.WebHost.ConfigureKestrel(serverOptions =>
 var fileProvider = new PhysicalFileProvider(distPath);
 
 app.UseHttpsRedirection();
+    app.UseAuthorization();
+    app.UseAuthentication();
 
 // Här deklarerar vi att vår app ska använda sig av vår distmapp alltid som en fallback.
 app.UseDefaultFiles(new DefaultFilesOptions
