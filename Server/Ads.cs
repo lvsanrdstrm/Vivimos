@@ -131,7 +131,8 @@ internal class Ads
     }
 
 
-   /* public static async Task<IResult> AddAd(State state, HttpContext ctx)
+
+    public static async Task<IResult> AddAd(State state, HttpContext ctx)
     {
 
         // Extract the ad data from the request body
