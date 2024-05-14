@@ -11,7 +11,7 @@ namespace Server
 
         public static  IResult PlaceBid(int id, State state, ClaimsPrincipal User)
         {
-    
+            Console.WriteLine("trying to place bid");
 
             try
             {
