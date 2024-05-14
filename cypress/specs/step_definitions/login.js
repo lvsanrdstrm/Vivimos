@@ -1,6 +1,6 @@
 import { Given, When, Then } from "@badeball/cypress-cucumber-preprocessor";
 
-Given('a login modal pops up', () => {
+Given('a modal pops up', () => {
   cy.get('.modal-body').should('be.visible');
 });
 
