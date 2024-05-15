@@ -2,7 +2,7 @@ import { Given, When, Then } from "@badeball/cypress-cucumber-preprocessor";
 
 
 When('I log in', () => {
-  cy.get('[value="Logga in"]').click();
+  cy.get(`button[value="login"]`).click();
   cy.get('.modal-body').should('be.visible');
   cy.get('.modal-body').within(() => {
     cy.get('form > [type="text"]').type('rosa.parks');
