@@ -20,9 +20,10 @@ When('I click on the {string} button', (buttonName) => {
 
 });
 
-When ('I click on {string}', (phrase)=> {
-  cy.get(`button[value="${phrase}"]`).click();
-})
+When('I click on {string}', (phrase) => {
+  cy.get(`input[value="${phrase}"]:first, button:contains("${phrase}"):first`).click();
+});
+
 
 
 Then('I should see the Min sida title', () => {

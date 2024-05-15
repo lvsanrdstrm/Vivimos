@@ -13,3 +13,7 @@ Cypress.Commands.add('login', () => {
 Cypress.Commands.add('buttonByIndex', (index) => {
   return cy.get(`:nth-child(${index}) > input`);
 });
+
+Cypress.Commands.add('clickButtonByText', (buttonText) => {
+  cy.get(`input[value="${buttonText}"], button:contains("${buttonText}")`).click();
+});
