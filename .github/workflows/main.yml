@@ -1,0 +1,60 @@
+name: Test Deploy
+
+# This workflow will run on every push to the repository in the dev branch.
+on:
+  push:
+    branches: [ "main" ]
+
+# The jobs to run in this workflow are defined here.
+jobs:
+
+ 
+
+  # The deploy job will run on the ubuntu-latest runner and will have the following steps.
+  deploy:
+    runs-on:
+      ubuntu-latest
+  # The steps to deploy the application to the server using SSH action.
+    steps:
+      - name: Doing a deploy
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USER }}
+          password: ${{ secrets.PASSWORD }}
+          port: ${{ secrets.PORT }}
+        # The commands to run on the server.
+
+        # We are using the nvm.sh script to use the correct Node.js version
+        # Because this ssh action is a non-interactive shell, we need to source the nvm.sh script to be able         # to use "NPM" and "Node" commands.
+
+        # We are checking the node and npm versions to make sure we are using the correct versions.
+
+        # We are installing the dependencies, building the application, moving the dist folder, we first delete the pm2 application running our C# backend, and then starting the server with pm2 again.
+
+        # We are deleting the cypress folder to make sure we are not running the tests on the server. And we do not need to have the cypress folder on the server.
+
+        # We are deleting the pm2 application before starting it again to make sure we are using the correct data from the frontend.
+
+        # This is because C# does not have a hot reload feature like Node.js, so it will be stuck in a restart-loop with incorrect data if we don't delete the application first.
+
+        # Script is the multiline string that contains the commands to run on the server in decending order.
+
+          script: |
+            echo "Deploying to the server"
+            source /root/.nvm/nvm.sh
+            nvm use v20.12.2
+            echo "Checking node and npm versions"
+            node -v
+            npm -v
+            cd /var/www/Vivimos
+            git pull
+            rm -r cypress
+            cd /var/www/Vivimos/frontend
+            npm ci
+            npm run build
+            cd /var/www/Vivimos/Server
+            rm -r dist
+            mv /var/www/Vivimos/frontend/dist .
+            pm2 delete vivimos
+            pm2 start --name vivimos "dotnet run"
