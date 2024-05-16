@@ -16,10 +16,7 @@ function Userpage() {
     
     navigate(`/users/${activeUser.id}`)
   } */
-  return
-  {
-    <p>Testkod för att se evt ändringar deployas. Nu är du på användarsidan.</p>
-  }
+
 
   useEffect(() => {
     const fetchUserData = async () => {
