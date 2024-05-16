@@ -2,7 +2,10 @@ name: Test Deploy
 
 on:
   push:
-    branches: ["dev"]
+    branches: 
+      - "dev"
+      - "main"
+
   pull_request:
     branches: ["main"]
 
@@ -28,7 +31,7 @@ jobs:
 
   deploy:
     needs: cypress_tests
-    if: ${{ github.event_name == 'pull_request' && success() }}
+    if: ${{ github.event_name == 'push' && (github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/main') && success() }}
     runs-on:
       ubuntu-latest
     steps:
