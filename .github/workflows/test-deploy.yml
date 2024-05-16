@@ -30,8 +30,9 @@ jobs:
         run: npm run test
 
   deploy:
-    # needs: cypress_tests
-    # if: ${{ github.event_name == 'push' && (github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/main') && success() }}
+    needs: cypress_tests
+    if: ${{ (github.event_name == 'push' || github.event_name == 'pull_request') && (github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/main') }}
+
     runs-on:
       ubuntu-latest
     steps:
@@ -43,6 +44,21 @@ jobs:
           password: ${{ secrets.PASSWORD }}
           port: ${{ secrets.PORT }}
           script: |
-            cd /var/www/Vivimos
-            git pull
+            echo "Deploying to the server"
+          source /root/.nvm/nvm.sh
+          nvm use v20.12.2
+          echo "Checking node and npm versions"
+          node -v
+          npm -v
+          cd /var/www/Vivimos
+          git pull
+          rm -r cypress
+          cd /var/www/Vivimos/frontend
+          npm ci
+          npm run build
+          cd /var/www/Vivimos/Server
+          rm -r dist
+          mv /var/www/Vivimos/frontend/dist .
+          pm2 delete vivimos
+          pm2 start --name vivimos "dotnet run"
             
