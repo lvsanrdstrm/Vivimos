@@ -45,20 +45,20 @@ jobs:
           port: ${{ secrets.PORT }}
           script: |
             echo "Deploying to the server"
-          source /root/.nvm/nvm.sh
-          nvm use v20.12.2
-          echo "Checking node and npm versions"
-          node -v
-          npm -v
-          cd /var/www/Vivimos
-          git pull
-          rm -r cypress
-          cd /var/www/Vivimos/frontend
-          npm ci
-          npm run build
-          cd /var/www/Vivimos/Server
-          rm -r dist
-          mv /var/www/Vivimos/frontend/dist .
-          pm2 delete vivimos
-          pm2 start --name vivimos "dotnet run"
+            source /root/.nvm/nvm.sh
+            nvm use v20.12.2
+            echo "Checking node and npm versions"
+            node -v
+            npm -v
+            cd /var/www/Vivimos
+            git pull
+            rm -r cypress
+            cd /var/www/Vivimos/frontend
+            npm ci
+            npm run build
+            cd /var/www/Vivimos/Server
+            rm -r dist
+            mv /var/www/Vivimos/frontend/dist .
+            pm2 delete vivimos
+            pm2 start --name vivimos "dotnet run"
             
