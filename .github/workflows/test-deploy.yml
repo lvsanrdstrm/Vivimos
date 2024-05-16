@@ -18,6 +18,8 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: "20"
+      - name: List contents of workspace directory
+        run: ls -l /github/workspace
       - name: Navigate to project directory
         run: cd Vivimos
       - name: Install dependencies
