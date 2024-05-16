@@ -1,4 +1,4 @@
-name: Test Deploy
+name: Publish Deploy
 
 # This workflow will run on every push to the repository in the dev branch.
 on:
